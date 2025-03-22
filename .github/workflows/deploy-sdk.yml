@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'deploy-event-recorder-sdk.yml'
+      - '.github/workflows/deploy-sdk.yml'
       - 'sdk/eventRecorder.ts'
 
 jobs:
