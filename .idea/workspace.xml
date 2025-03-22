@@ -6,9 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="6865e7de-739b-42f3-b32c-2991a559b20a" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sdk/eventRecorder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/eventRecorder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.sdk.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.sdk.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -94,7 +95,7 @@
       <workItem from="1742627960727" duration="366000" />
       <workItem from="1742628331551" duration="178000" />
       <workItem from="1742630281877" duration="270000" />
-      <workItem from="1742630643732" duration="7308000" />
+      <workItem from="1742630643732" duration="9034000" />
     </task>
     <servers />
   </component>

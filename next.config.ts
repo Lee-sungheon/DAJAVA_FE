@@ -2,7 +2,7 @@ import type { NextConfig } from 'next';
 
 const cspHeader = `
     default-src 'self';
-    script-src 'self' 'unsafe-eval' https://d3qpmn2azr2ebp.cloudfront.net 'unsafe-inline';
+    script-src 'self' 'unsafe-eval' https://sdk.dajava.link 'unsafe-inline';
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data:;
     font-src 'self';

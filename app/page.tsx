@@ -15,7 +15,7 @@ export default function Home() {
 
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = 'https://d3qpmn2azr2ebp.cloudfront.net/event-recorder.js';
+    script.src = 'https://sdk.dajava.link/event-recorder.js';
     script.async = true;
     script.onload = async () => {
       setIsLoadedDajavaScript(true);
