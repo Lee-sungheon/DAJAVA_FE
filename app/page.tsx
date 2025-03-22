@@ -11,16 +11,14 @@ declare global {
 }
 
 export default function Home() {
-  const [isLoadedScript, setIsLoadedScript] = useState(false);
+  const [isLoadedDajavaScript, setIsLoadedDajavaScript] = useState(false);
 
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://d3qpmn2azr2ebp.cloudfront.net/event-recorder.js';
     script.async = true;
     script.onload = async () => {
-      console.log(window.dajava);
-      console.log(window.dajava.UserEventRecorder);
-      setIsLoadedScript(true);
+      setIsLoadedDajavaScript(true);
     };
     document.body.appendChild(script);
 
@@ -30,7 +28,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (!isLoadedScript || !window.dajava) {
+    if (!isLoadedDajavaScript || !window.dajava) {
       return;
     }
 
@@ -38,7 +36,7 @@ export default function Home() {
     userEventRecorder.startRecording();
 
     return () => userEventRecorder.stopRecording();
-  }, [isLoadedScript]);
+  }, [isLoadedDajavaScript]);
 
   return (
     <div className={styles.page}>
