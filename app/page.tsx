@@ -1,7 +1,45 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+
+import Image from 'next/image';
+import styles from './page.module.css';
+import { useEffect, useState } from 'react';
+
+declare global {
+  interface Window {
+    dajava: any;
+  }
+}
 
 export default function Home() {
+  const [isLoadedScript, setIsLoadedScript] = useState(false);
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://d3qpmn2azr2ebp.cloudfront.net/event-recorder.js';
+    script.async = true;
+    script.onload = async () => {
+      console.log(window.dajava);
+      console.log(window.dajava.UserEventRecorder);
+      setIsLoadedScript(true);
+    };
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isLoadedScript || !window.dajava) {
+      return;
+    }
+
+    const userEventRecorder = new window.dajava.UserEventRecorder();
+    userEventRecorder.startRecording();
+
+    return () => userEventRecorder.stopRecording();
+  }, [isLoadedScript]);
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
