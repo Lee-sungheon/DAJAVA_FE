@@ -1,3 +1,5 @@
+import html2canvas from 'html2canvas';
+
 export const throttle = <Params extends unknown[]>(
   callback: (...args: Params) => unknown,
   delayMs: number,
@@ -31,6 +33,7 @@ interface IScrollEventData {
 export class UserEventRecorder {
   private isRecording: boolean = false;
   private throttleDelay: number = 200;
+  public screenshotDataUrl: string | null = null;
 
   private handleMouseMove = throttle((e: MouseEvent) => {
     const eventData: IMouseEventData = {
@@ -64,8 +67,17 @@ export class UserEventRecorder {
 
   public startRecording() {
     if (this.isRecording) return;
-
     this.isRecording = true;
+
+    html2canvas(document.body)
+      .then((canvas) => {
+        this.screenshotDataUrl = canvas.toDataURL('image/png');
+        console.log('Screenshot captured:', this.screenshotDataUrl);
+      })
+      .catch((error) => {
+        console.error('Screenshot capture failed:', error);
+      });
+
     document.addEventListener('mousemove', this.handleMouseMove);
     document.addEventListener('click', this.handleClick);
     window.addEventListener('scroll', this.handleScroll);
