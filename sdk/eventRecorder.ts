@@ -69,15 +69,20 @@ export class UserEventRecorder {
     this.isRecording = true;
 
     setTimeout(
-      () =>
+      () => {
+        document.querySelectorAll('img').forEach((img) => {
+          img.setAttribute('crossOrigin', 'anonymous');
+        });
+        
         domtoimage
-          .toPng(document.body, { crossOrigin: 'anonymous' })
+          .toPng(document.body)
           .then((dataUrl: string) => {
             console.log('Captured Image URL:', dataUrl);
           })
           .catch((error: any) => {
             console.error('Image capture failed:', error);
-          }),
+          });
+      },
       2000,
     );
 
