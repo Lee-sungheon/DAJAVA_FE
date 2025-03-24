@@ -71,7 +71,7 @@ export class UserEventRecorder {
     setTimeout(
       () =>
         domtoimage
-          .toPng(document.body)
+          .toPng(document.body, { crossOrigin: 'anonymous' })
           .then((dataUrl: string) => {
             console.log('Captured Image URL:', dataUrl);
           })
