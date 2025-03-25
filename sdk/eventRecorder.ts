@@ -16,6 +16,18 @@ const throttle = <Params extends unknown[]>(
   };
 };
 
+const imageCache = new Map();
+
+async function getCachedBase64(url: string) {
+  if (imageCache.has(url)) {
+    return imageCache.get(url);
+  } else {
+    const promise = getBase64FromUrl(url);
+    imageCache.set(url, promise);
+    return promise;
+  }
+}
+
 const getBase64FromUrl = async (url: string) => {
   const response = await fetch(
     `https://2z1dj6gdya.execute-api.ap-northeast-2.amazonaws.com/proxy?url=${url}`,
@@ -96,20 +108,43 @@ export class UserEventRecorder {
     setTimeout(async () => {
       const images = Array.from(document.querySelectorAll('img'));
 
-      const promises = images.map(async (img) => {
+      const imgPromises = images.map(async (img) => {
         if (!img.src.includes('https') || img.src.includes('localhost')) {
           return;
         }
 
         try {
-          img.src = await getBase64FromUrl(img.src);
+          img.src = await getCachedBase64(img.src);
         } catch (error) {
           console.log(error);
           return;
         }
       });
 
-      await Promise.all(promises).catch(() => null);
+      const elements = Array.from(document.querySelectorAll<HTMLElement>('*'));
+
+      const bgPromises = elements.map(async (el) => {
+        const style = window.getComputedStyle(el);
+        const bgImage = style.backgroundImage;
+
+        if (!bgImage || bgImage === 'none') {
+          return;
+        }
+
+        const urlMatch = bgImage.match(/url\(["']?([^"')]+)["']?\)/);
+        if (urlMatch && urlMatch[1]) {
+          const imageUrl = urlMatch[1];
+
+          try {
+            const base64Url = await getCachedBase64(imageUrl);
+            el.style.backgroundImage = `url('${base64Url}')`;
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      });
+
+      await Promise.all([...imgPromises, ...bgPromises]).catch(() => null);
 
       domToJpeg(document.body, {
         fetch: {
