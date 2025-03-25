@@ -70,7 +70,11 @@ export class UserEventRecorder {
 
     setTimeout(async () => {
       try {
-        const canvas = await toCanvas(document.body, { cacheBust: true });
+        const canvas = await toCanvas(document.body, {
+          cacheBust: true,
+          skipFonts: true,
+          preferredFontFormat: 'woff2',
+        });
         const imgData = canvas.toDataURL('image/jpeg');
         console.log(imgData);
       } catch (error) {

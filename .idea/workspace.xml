@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="6865e7de-739b-42f3-b32c-2991a559b20a" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sdk/eventRecorder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/sdk/eventRecorder.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -92,7 +91,7 @@
       <workItem from="1742627960727" duration="366000" />
       <workItem from="1742628331551" duration="178000" />
       <workItem from="1742630281877" duration="270000" />
-      <workItem from="1742630643732" duration="11853000" />
+      <workItem from="1742630643732" duration="12316000" />
     </task>
     <servers />
   </component>
