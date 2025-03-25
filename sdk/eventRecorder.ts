@@ -119,6 +119,17 @@ export class UserEventRecorder {
           },
           bypassingCache: true,
         },
+        filter: (node) => {
+          if (
+            node.nodeName.toUpperCase() === 'IFRAME' &&
+            node instanceof HTMLIFrameElement &&
+            node.src &&
+            node.src.includes('googletagmanager')
+          ) {
+            return false;
+          }
+          return true;
+        },
       }).then((res) => console.log(res));
     }, 2000);
 
