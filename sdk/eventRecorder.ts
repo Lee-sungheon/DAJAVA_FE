@@ -1,4 +1,4 @@
-import domtoimage from 'dom-to-image';
+import { toCanvas } from 'html-to-image';
 
 export const throttle = <Params extends unknown[]>(
   callback: (...args: Params) => unknown,
@@ -68,23 +68,15 @@ export class UserEventRecorder {
     if (this.isRecording) return;
     this.isRecording = true;
 
-    setTimeout(
-      () => {
-        document.querySelectorAll('img').forEach((img) => {
-          img.setAttribute('crossOrigin', 'anonymous');
-        });
-        
-        domtoimage
-          .toPng(document.body)
-          .then((dataUrl: string) => {
-            console.log('Captured Image URL:', dataUrl);
-          })
-          .catch((error: any) => {
-            console.error('Image capture failed:', error);
-          });
-      },
-      2000,
-    );
+    setTimeout(async () => {
+      try {
+        const canvas = await toCanvas(document.body);
+        const imgData = canvas.toDataURL('image/jpeg');
+        console.log(imgData);
+      } catch (error) {
+        console.log(error);
+      }
+    }, 2000);
 
     document.addEventListener('mousemove', this.handleMouseMove);
     document.addEventListener('click', this.handleClick);
