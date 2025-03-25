@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import styles from './page.module.css';
 import { useEffect, useState } from 'react';
+import { UserEventRecorder } from '@dajava/sdk/eventRecorder';
 
 declare global {
   interface Window {
@@ -32,7 +33,8 @@ export default function Home() {
       return;
     }
 
-    const userEventRecorder = new window.dajava.UserEventRecorder();
+    const userEventRecorder = new UserEventRecorder();
+    // const userEventRecorder = new window.dajava.UserEventRecorder();
     userEventRecorder.startRecording();
 
     return () => userEventRecorder.stopRecording();

@@ -19,8 +19,8 @@ export const throttle = <Params extends unknown[]>(
 interface IMouseEventData {
   type: 'mousemove' | 'click';
   timestamp: number;
-  x: number;
-  y: number;
+  clientX: number;
+  clientY: number;
 }
 
 interface IScrollEventData {
@@ -38,8 +38,8 @@ export class UserEventRecorder {
     const eventData: IMouseEventData = {
       type: 'mousemove',
       timestamp: Date.now(),
-      x: e.clientX,
-      y: e.clientY,
+      clientX: e.clientX,
+      clientY: e.clientY,
     };
     console.log(eventData);
   }, this.throttleDelay);
@@ -48,8 +48,8 @@ export class UserEventRecorder {
     const eventData: IMouseEventData = {
       type: 'click',
       timestamp: Date.now(),
-      x: e.clientX,
-      y: e.clientY,
+      clientX: e.clientX,
+      clientY: e.clientY,
     };
     console.log(eventData);
   };
@@ -70,7 +70,7 @@ export class UserEventRecorder {
 
     setTimeout(async () => {
       try {
-        const canvas = await toCanvas(document.body);
+        const canvas = await toCanvas(document.body, { cacheBust: true });
         const imgData = canvas.toDataURL('image/jpeg');
         console.log(imgData);
       } catch (error) {
