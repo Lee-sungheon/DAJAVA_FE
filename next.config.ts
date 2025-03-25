@@ -4,7 +4,7 @@ const cspHeader = `
     default-src 'self';
     script-src 'self' 'unsafe-eval' https://sdk.dajava.link 'unsafe-inline';
     style-src 'self' 'unsafe-inline';
-    img-src 'self' blob: data:;
+    img-src 'self' https://static.zaritalk.com blob: data:;
     font-src 'self';
     object-src 'none';
     base-uri 'self';

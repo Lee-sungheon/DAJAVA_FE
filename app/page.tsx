@@ -51,6 +51,12 @@ export default function Home() {
           height={38}
           priority
         />
+        <img
+          src={'https://static.zaritalk.com/favicon/android-chrome-256x256.png'}
+          alt="Zaritalk logo"
+          width={180}
+          height={180}
+        />
         <ol>
           <li>
             Get started by editing <code>app/page.tsx</code>.

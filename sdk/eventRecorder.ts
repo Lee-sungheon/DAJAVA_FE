@@ -1,7 +1,6 @@
-import html2canvas from 'html2canvas';
-import domtoimage from 'dom-to-image-more';
+import { domToJpeg } from 'modern-screenshot';
 
-export const throttle = <Params extends unknown[]>(
+const throttle = <Params extends unknown[]>(
   callback: (...args: Params) => unknown,
   delayMs: number,
 ) => {
@@ -79,24 +78,16 @@ export class UserEventRecorder {
     if (this.isRecording) return;
     this.isRecording = true;
 
-    setTimeout(async () => {
-      domtoimage
-        .toJpeg(document.body, { cacheBust: true })
-        .then((image) => console.log(image));
-      html2canvas(document.body, {
-        allowTaint: false,
-        useCORS: true,
-        logging: false,
-        scale: window.devicePixelRatio,
-        backgroundColor: null,
-      })
-        .then((canvas) => {
-          const imgData = canvas.toDataURL('image/jpeg');
-          console.log(imgData);
-        })
-        .catch((err) => {
-          console.error('html2canvas 오류:', err);
-        });
+    setTimeout(() => {
+      domToJpeg(document.body, {
+        fetch: {
+          requestInit: {
+            mode: 'cors',
+            cache: 'no-cache',
+          },
+          bypassingCache: true,
+        },
+      }).then((res) => console.log(res));
     }, 2000);
 
     document.addEventListener('pointermove', this.handleMouseMove);
