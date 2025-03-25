@@ -1,4 +1,5 @@
-import { toCanvas } from 'html-to-image';
+import html2canvas from 'html2canvas';
+import domtoimage from 'dom-to-image-more';
 
 export const throttle = <Params extends unknown[]>(
   callback: (...args: Params) => unknown,
@@ -17,7 +18,7 @@ export const throttle = <Params extends unknown[]>(
 };
 
 interface IMouseEventData {
-  type: 'mousemove' | 'click';
+  type: 'mousemove' | 'touchmove' | 'click';
   timestamp: number;
   clientX: number;
   clientY: number;
@@ -34,12 +35,22 @@ export class UserEventRecorder {
   private isRecording: boolean = false;
   private throttleDelay: number = 200;
 
-  private handleMouseMove = throttle((e: MouseEvent) => {
+  private handleMouseMove = throttle((e: PointerEvent) => {
     const eventData: IMouseEventData = {
       type: 'mousemove',
       timestamp: Date.now(),
       clientX: e.clientX,
       clientY: e.clientY,
+    };
+    console.log(eventData);
+  }, this.throttleDelay);
+
+  private handleTouchMove = throttle((e: TouchEvent) => {
+    const eventData: IMouseEventData = {
+      type: 'touchmove',
+      timestamp: Date.now(),
+      clientX: e.touches[0].clientX,
+      clientY: e.touches[0].clientY,
     };
     console.log(eventData);
   }, this.throttleDelay);
@@ -69,20 +80,27 @@ export class UserEventRecorder {
     this.isRecording = true;
 
     setTimeout(async () => {
-      try {
-        const canvas = await toCanvas(document.body, {
-          cacheBust: true,
-          skipFonts: true,
-          preferredFontFormat: 'woff2',
+      domtoimage
+        .toJpeg(document.body, { cacheBust: true })
+        .then((image) => console.log(image));
+      html2canvas(document.body, {
+        allowTaint: false,
+        useCORS: true,
+        logging: false,
+        scale: window.devicePixelRatio,
+        backgroundColor: null,
+      })
+        .then((canvas) => {
+          const imgData = canvas.toDataURL('image/jpeg');
+          console.log(imgData);
+        })
+        .catch((err) => {
+          console.error('html2canvas 오류:', err);
         });
-        const imgData = canvas.toDataURL('image/jpeg');
-        console.log(imgData);
-      } catch (error) {
-        console.log(error);
-      }
     }, 2000);
 
-    document.addEventListener('mousemove', this.handleMouseMove);
+    document.addEventListener('pointermove', this.handleMouseMove);
+    document.addEventListener('touchmove', this.handleTouchMove);
     document.addEventListener('click', this.handleClick);
     window.addEventListener('scroll', this.handleScroll);
   }
@@ -91,7 +109,8 @@ export class UserEventRecorder {
     if (!this.isRecording) return;
 
     this.isRecording = false;
-    document.removeEventListener('mousemove', this.handleMouseMove);
+    document.removeEventListener('pointermove', this.handleMouseMove);
+    document.removeEventListener('touchmove', this.handleTouchMove);
     document.removeEventListener('click', this.handleClick);
     window.removeEventListener('scroll', this.handleScroll);
   }
