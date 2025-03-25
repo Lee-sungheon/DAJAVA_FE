@@ -1,4 +1,4 @@
-import { domToJpeg } from 'modern-screenshot';
+import { toJpeg } from 'html-to-image';
 
 const throttle = <Params extends unknown[]>(
   callback: (...args: Params) => unknown,
@@ -14,6 +14,23 @@ const throttle = <Params extends unknown[]>(
       }, delayMs);
     }
   };
+};
+
+const getBase64FromUrl = async (url: string) => {
+  const data = await fetch(`https://proxy.cors.sh/${url}`, {
+    headers: {
+      'x-cors-api-key': 'temp_ff5f253e4c753d3b5caa9cdc4166b8c6',
+    },
+  });
+  const blob = await data.blob();
+  return new Promise<string>((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = function () {
+      const base64data = reader.result;
+      resolve(String(base64data));
+    };
+  });
 };
 
 interface IMouseEventData {
@@ -78,16 +95,20 @@ export class UserEventRecorder {
     if (this.isRecording) return;
     this.isRecording = true;
 
-    setTimeout(() => {
-      domToJpeg(document.body, {
-        fetch: {
-          requestInit: {
-            mode: 'cors',
-            cache: 'no-cache',
-          },
-          bypassingCache: true,
-        },
-      }).then((res) => console.log(res));
+    setTimeout(async () => {
+      const images = Array.from(document.querySelectorAll('img'));
+
+      const promises = images.map(async (img) => {
+        if (!img.src.includes('https') || img.src.includes('localhost')) {
+          return;
+        }
+
+        img.src = await getBase64FromUrl(img.src);
+      });
+
+      await Promise.all(promises).catch(() => null);
+
+      toJpeg(document.body).then((res) => console.log(res));
     }, 2000);
 
     document.addEventListener('pointermove', this.handleMouseMove);
