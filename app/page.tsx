@@ -33,8 +33,8 @@ export default function Home() {
       return;
     }
 
-    // const userEventRecorder = new UserEventRecorder();
-    const userEventRecorder = new window.dajava.UserEventRecorder();
+    const userEventRecorder = new UserEventRecorder();
+    // const userEventRecorder = new window.dajava.UserEventRecorder();
     userEventRecorder.startRecording();
 
     return () => userEventRecorder.stopRecording();

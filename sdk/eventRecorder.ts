@@ -1,4 +1,4 @@
-import { toJpeg } from 'html-to-image';
+import { domToJpeg } from 'modern-screenshot';
 
 const throttle = <Params extends unknown[]>(
   callback: (...args: Params) => unknown,
@@ -17,12 +17,10 @@ const throttle = <Params extends unknown[]>(
 };
 
 const getBase64FromUrl = async (url: string) => {
-  const data = await fetch(`https://proxy.cors.sh/${url}`, {
-    headers: {
-      'x-cors-api-key': 'temp_ff5f253e4c753d3b5caa9cdc4166b8c6',
-    },
-  });
-  const blob = await data.blob();
+  const response = await fetch(
+    `https://2z1dj6gdya.execute-api.ap-northeast-2.amazonaws.com/proxy?url=${url}`,
+  );
+  const blob = await response.blob();
   return new Promise<string>((resolve) => {
     const reader = new FileReader();
     reader.readAsDataURL(blob);
@@ -103,12 +101,25 @@ export class UserEventRecorder {
           return;
         }
 
-        img.src = await getBase64FromUrl(img.src);
+        try {
+          img.src = await getBase64FromUrl(img.src);
+        } catch (error) {
+          console.log(error);
+          return;
+        }
       });
 
       await Promise.all(promises).catch(() => null);
 
-      toJpeg(document.body).then((res) => console.log(res));
+      domToJpeg(document.body, {
+        fetch: {
+          requestInit: {
+            mode: 'cors',
+            cache: 'no-cache',
+          },
+          bypassingCache: true,
+        },
+      }).then((res) => console.log(res));
     }, 2000);
 
     document.addEventListener('pointermove', this.handleMouseMove);

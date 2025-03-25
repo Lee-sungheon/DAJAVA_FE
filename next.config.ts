@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next';
 
 const cspHeader = `
-    default-src 'self' https://sdk.dajava.link https://static.zaritalk.com https://proxy.cors.sh/;
+    default-src 'self' https://sdk.dajava.link https://2z1dj6gdya.execute-api.ap-northeast-2.amazonaws.com https://static.zaritalk.com https://proxy.cors.sh/;
     script-src 'self' 'unsafe-eval' https://sdk.dajava.link 'unsafe-inline';
     style-src 'self' 'unsafe-inline';
     img-src 'self' https://static.zaritalk.com blob: data:;
