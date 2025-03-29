@@ -1,4 +1,4 @@
-name: Zaritalk Lessee Stage Build
+name: Deploy Dajava Web
 
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v3
         with:
-          ref: stage
+          ref: main
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -39,7 +39,8 @@ jobs:
           yarn prepare
           yarn build
 
-      - uses: amondnet/vercel-action@v25
+      - name: Deploying application
+        uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
