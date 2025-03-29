@@ -4,6 +4,8 @@ import Image from 'next/image';
 import styles from './page.module.css';
 import { useEffect, useState } from 'react';
 import { UserEventRecorder } from '@dajava/sdk/eventRecorder';
+import { css } from '@dajava/panda-css/css';
+import { Flex } from '@dajava/styled-system/jsx';
 
 declare global {
   interface Window {
@@ -51,12 +53,17 @@ export default function Home() {
           height={38}
           priority
         />
-        <img
-          src={'https://static.zaritalk.com/favicon/android-chrome-256x256.png'}
-          alt="Zaritalk logo"
-          width={180}
-          height={180}
-        />
+        <Flex css={{ p: '50px' }}>
+          <img
+            src={
+              'https://static.zaritalk.com/favicon/android-chrome-256x256.png'
+            }
+            alt="Zaritalk logo"
+            width={180}
+            height={180}
+            className={css({ m: '100px' })}
+          />
+        </Flex>
         <ol>
           <li>
             Get started by editing <code>app/page.tsx</code>.

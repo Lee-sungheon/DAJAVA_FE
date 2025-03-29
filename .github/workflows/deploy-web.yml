@@ -1,0 +1,48 @@
+name: Zaritalk Lessee Stage Build
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/deploy-web.yml'
+      - 'apps/**'
+      - 'components/**'
+      - 'domains/**'
+      - 'hooks/**'
+      - 'utils/**'
+      - 'constants/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: --max_old_space_size=4096
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+        with:
+          ref: stage
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.18.x'
+          cache: 'yarn'
+
+      - name: Installing Yarn
+        run: yarn install
+
+      - name: Building application
+        run: |
+          yarn prepare
+          yarn build
+
+      - uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+
+

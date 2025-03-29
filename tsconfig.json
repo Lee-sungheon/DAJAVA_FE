@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@dajava/*": ["./*"]
+      "@dajava/*": ["./*"],
+      "@dajava/panda-css/*": ["./styled-system/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
