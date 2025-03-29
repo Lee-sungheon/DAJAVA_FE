@@ -1,14 +1,23 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect } from 'react';
 
 import { ROUTES } from '@dajava/constants/routes';
+import { UserEventRecorder } from '@dajava/sdk/eventRecorder';
 import { Flex, HStack } from '@dajava/styled-system/jsx';
 
 import DajavaLogoIcon from '../icons/DajavaLogoIcon';
 import Button from '../ui/Button';
 
 export default function TopNavigation() {
+  useEffect(() => {
+    const userEventRecorder = new UserEventRecorder();
+    userEventRecorder.startRecording();
+
+    return () => userEventRecorder.stopRecording();
+  }, []);
+
   return (
     <Flex
       justifyContent={'space-between'}

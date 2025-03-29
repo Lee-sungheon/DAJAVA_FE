@@ -160,6 +160,13 @@ export class UserEventRecorder {
           }
           return true;
         },
+        backgroundColor: '#ffffff',
+        quality: 1,
+        style: {
+          backgroundColor: '#ffffff',
+          width: '100%',
+          height: '100%',
+        },
       }).then((res) => console.log(res));
     }, 2000);
 

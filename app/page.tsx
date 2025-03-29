@@ -39,7 +39,6 @@ export default function Home() {
       return;
     }
 
-    // const userEventRecorder = new UserEventRecorder();
     const userEventRecorder = new window.dajava.UserEventRecorder();
     userEventRecorder.startRecording();
 
@@ -51,7 +50,9 @@ export default function Home() {
       <main>
         <Flex css={{ p: '50px' }}>
           <img
-            src={'https://static.zaritalk.com/favicon/android-chrome-256x256.png'}
+            src={
+              'https://static.zaritalk.com/favicon/android-chrome-256x256.png'
+            }
             alt={'Zaritalk logo'}
             width={180}
             height={180}
@@ -60,14 +61,18 @@ export default function Home() {
         </Flex>
         <ol>
           <li>
-            {'Get started by editing '}<code>{'app/page.tsx'}</code>{'.'}
+            {'Get started by editing '}
+            <code>{'app/page.tsx'}</code>
+            {'.'}
           </li>
           <li>{'Save and see your changes instantly.'}</li>
         </ol>
 
         <div>
           <a
-            href={'https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'}
+            href={
+              'https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
+            }
             target={'_blank'}
             rel={'noopener noreferrer'}
           >
@@ -80,7 +85,9 @@ export default function Home() {
             {'Deploy now'}
           </a>
           <a
-            href={'https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'}
+            href={
+              'https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
+            }
             target={'_blank'}
             rel={'noopener noreferrer'}
           >
@@ -89,7 +96,9 @@ export default function Home() {
         </div>
       </main>
       <a
-        href={'https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'}
+        href={
+          'https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
+        }
         target={'_blank'}
         rel={'noopener noreferrer'}
       >
@@ -103,7 +112,9 @@ export default function Home() {
         {'Learn'}
       </a>
       <a
-        href={'https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'}
+        href={
+          'https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
+        }
         target={'_blank'}
         rel={'noopener noreferrer'}
       >
@@ -117,7 +128,9 @@ export default function Home() {
         {'Examples'}
       </a>
       <a
-        href={'https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'}
+        href={
+          'https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
+        }
         target={'_blank'}
         rel={'noopener noreferrer'}
       >
