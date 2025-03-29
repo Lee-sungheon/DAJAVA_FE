@@ -1,5 +1,7 @@
 import { defineConfig } from '@pandacss/dev';
 
+import { globalCss } from '@dajava/styles/globalStyles';
+
 export default defineConfig({
   preflight: true,
   clean: true,
@@ -12,6 +14,7 @@ export default defineConfig({
   theme: {
     extend: {},
   },
+  globalCss: globalCss,
   jsxFramework: 'react',
   watch: true,
   outdir: 'styled-system',
