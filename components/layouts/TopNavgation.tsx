@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { ROUTES } from '@dajava/constants/routes';
-import { Flex, HStack } from '@dajava/styled-system/jsx';
+import { HStack } from '@dajava/styled-system/jsx';
 import { flex } from '@dajava/styled-system/patterns';
 
 import Button from '../ui/Button';
