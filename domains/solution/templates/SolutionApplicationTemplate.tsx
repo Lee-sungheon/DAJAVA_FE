@@ -1,0 +1,34 @@
+'use client';
+
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { vstack } from '@dajava/styled-system/patterns';
+
+import ApplicationController from '../components/application/ApplicationController';
+import ApplicationForm from '../components/application/ApplicationForm';
+import { IApplicationForm } from '../types/application';
+
+const SolutionApplicationTemplate = () => {
+  const methods = useForm<IApplicationForm>({
+    defaultValues: {
+      email: '',
+      password: '',
+      url: '',
+      startDate: '',
+      endDate: '',
+    },
+  });
+
+  return (
+    <FormProvider {...methods}>
+      <form className={vstack({ width: '100%', maxWidth: '600px', px: '32px', gap: '84px' })}>
+        <ApplicationForm />
+        <ApplicationController />
+      </form>
+    </FormProvider>
+  );
+};
+
+SolutionApplicationTemplate.displayName = 'SolutionApplicationTemplate';
+
+export default SolutionApplicationTemplate;

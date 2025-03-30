@@ -3,23 +3,14 @@ import { styled } from '@dajava/styled-system/jsx';
 import type { SystemStyleObject } from '@dajava/styled-system/types';
 
 interface ButtonProps
-  extends Omit<
-      React.ButtonHTMLAttributes<HTMLButtonElement>,
-      keyof SystemStyleObject
-    >,
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, keyof SystemStyleObject>,
     SystemStyleObject {
   variant?: 'primary' | 'secondary' | 'outline' | 'link';
   size?: 'sm' | 'md' | 'lg';
   css?: SystemStyleObject;
 }
 
-export default function Button({
-  children,
-  variant,
-  size,
-  css,
-  ...props
-}: ButtonProps) {
+export default function Button({ children, variant, size, css, ...props }: ButtonProps) {
   return (
     <StyledButton variant={variant} size={size} css={css} {...props}>
       {children}

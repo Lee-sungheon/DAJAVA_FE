@@ -44,6 +44,7 @@ const eslintConfig = [
         'error',
         { props: 'always', children: 'always' },
       ],
+      '@next/next/no-img-element': 'off',
     },
   }),
 ];

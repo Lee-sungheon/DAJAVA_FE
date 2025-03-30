@@ -7,6 +7,7 @@ export default defineConfig({
   clean: true,
   include: [
     './app/**/*.{js,jsx,ts,tsx}',
+    './domains/**/*.{js,jsx,ts,tsx}',
     './components/**/*.{js,jsx,ts,tsx}',
     './hooks/**/*.{js,jsx,ts,tsx}',
   ],
