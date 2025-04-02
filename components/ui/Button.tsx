@@ -5,7 +5,7 @@ import type { SystemStyleObject } from '@dajava/styled-system/types';
 interface ButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, keyof SystemStyleObject>,
     SystemStyleObject {
-  variant?: 'primary' | 'secondary' | 'outline' | 'link';
+  variant?: 'primary' | 'secondary' | 'orange' | 'outline' | 'link';
   size?: 'sm' | 'md' | 'lg';
   css?: SystemStyleObject;
 }
@@ -49,6 +49,11 @@ const StyledButton = styled('button', {
         bg: 'gray.200',
         color: 'gray.900',
         _hover: { bg: 'gray.300' },
+      },
+      orange: {
+        bg: 'orange.500',
+        color: 'white',
+        _hover: { bg: 'orange.600' },
       },
       outline: {
         border: '1px solid',

@@ -5,3 +5,8 @@ export interface IApplicationForm {
   startDate: string;
   endDate: string;
 }
+
+export interface IResultAuthForm {
+  uuid: string;
+  password: string;
+}
