@@ -8,10 +8,12 @@ import { useState, useRef, useEffect } from 'react';
 import { DayPicker, DateRange } from 'react-day-picker';
 import { useFormContext } from 'react-hook-form';
 
+import CalanderIcon from '@dajava/components/ui/icons/CalanderIcon';
 import Input from '@dajava/components/ui/Input';
 import { css } from '@dajava/styled-system/css';
 
 import { IApplicationForm } from '../../types/application';
+import { Box } from '@dajava/styled-system/jsx';
 
 const PeriodInput = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -66,13 +68,18 @@ const PeriodInput = () => {
 
   return (
     <div className={calendarClassName} ref={calendarRef}>
-      <Input
-        value={displayValue}
-        placeholder={'행동 분석 기간 선택'}
-        error={String(errors['startDate']?.message ?? errors['endDate']?.message ?? '')}
-        onClick={() => setIsOpen(true)}
-        readOnly
-      />
+      <div className={css({ position: 'relative' })}>
+        <Input
+          value={displayValue}
+          placeholder={'행동 분석 기간 선택'}
+          error={String(errors['startDate']?.message ?? errors['endDate']?.message ?? '')}
+          onClick={() => setIsOpen(true)}
+          readOnly
+        />
+        <Box className={css({ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)' })}>
+          <CalanderIcon />
+        </Box>
+      </div>
       {isOpen && (
         <div className={popoverClassName}>
           <DayPicker

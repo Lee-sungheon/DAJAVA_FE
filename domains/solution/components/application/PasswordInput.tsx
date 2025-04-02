@@ -38,7 +38,7 @@ const PasswordInput = () => {
           })}
         />
         <VisibilityToggleButton type={'button'} onClick={() => setIsVisible(!isVisible)}>
-          {isVisible ? <EyeOffIcon /> : <EyeIcon />}
+          {isVisible ? <EyeOffIcon size={18} /> : <EyeIcon size={18} />}
         </VisibilityToggleButton>
       </div>
     </div>
@@ -49,15 +49,18 @@ const VisibilityToggleButton = styled('button', {
   base: {
     position: 'absolute',
     right: '16px',
-    top: '8px',
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
-    padding: '4px',
+    top: '50%',
+    transform: 'translateY(-50%)',
+
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
     color: 'gray.500',
+
     _hover: {
       color: 'gray.700',
     },

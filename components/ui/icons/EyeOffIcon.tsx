@@ -1,9 +1,6 @@
-interface IconProps {
-  size?: number;
-  color?: string;
-}
+import { IconProps } from '.';
 
-const EyeOffIcon = ({ size = 24, color = 'currentColor' }: IconProps) => {
+const EyeOffIcon = ({ size = 24, color = 'currentColor', className }: IconProps) => {
   return (
     <svg
       width={size}
@@ -14,6 +11,7 @@ const EyeOffIcon = ({ size = 24, color = 'currentColor' }: IconProps) => {
       strokeWidth={'2'}
       strokeLinecap={'round'}
       strokeLinejoin={'round'}
+      className={className}
     >
       <path
         d={

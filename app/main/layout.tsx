@@ -1,5 +1,5 @@
 import TopNavigation from '@dajava/components/layouts/TopNavgation';
-import { Flex } from '@dajava/styled-system/jsx';
+import { flex } from '@dajava/styled-system/patterns';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -7,9 +7,9 @@ interface MainLayoutProps {
 
 export default function MainLayout({ children }: MainLayoutProps) {
   return (
-    <Flex direction={'column'}>
+    <main className={flex({ direction: 'column' })}>
       <TopNavigation />
       {children}
-    </Flex>
+    </main>
   );
 }

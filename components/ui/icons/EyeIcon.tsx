@@ -1,9 +1,6 @@
-interface IconProps {
-  size?: number;
-  color?: string;
-}
+import { IconProps } from '.';
 
-export default function EyeIcon({ size = 24, color = 'currentColor' }: IconProps) {
+export default function EyeIcon({ size = 24, color = 'currentColor', className }: IconProps) {
   return (
     <svg
       width={size}
@@ -14,6 +11,7 @@ export default function EyeIcon({ size = 24, color = 'currentColor' }: IconProps
       strokeWidth={'2'}
       strokeLinecap={'round'}
       strokeLinejoin={'round'}
+      className={className}
     >
       <path d={'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z'} />
       <circle cx={'12'} cy={'12'} r={'3'} />

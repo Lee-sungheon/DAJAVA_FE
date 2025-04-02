@@ -68,7 +68,10 @@ export default function TopNavigation() {
           <Button
             variant={'secondary'}
             size={'lg'}
-            css={{ fontWeight: pathname === ROUTES.SOLUTION_RESULT ? '700' : '400' }}
+            css={{
+              fontWeight:
+                pathname === ROUTES.SOLUTION_RESULT || pathname === ROUTES.SOLUTION_RESULT_AUTH ? '700' : '400',
+            }}
           >
             {'솔루션 결과'}
           </Button>
