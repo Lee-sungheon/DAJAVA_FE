@@ -11,9 +11,9 @@ import { useFormContext } from 'react-hook-form';
 import CalanderIcon from '@dajava/components/ui/icons/CalanderIcon';
 import Input from '@dajava/components/ui/Input';
 import { css } from '@dajava/styled-system/css';
+import { Box } from '@dajava/styled-system/jsx';
 
 import { IApplicationForm } from '../../types/application';
-import { Box } from '@dajava/styled-system/jsx';
 
 const PeriodInput = () => {
   const [isOpen, setIsOpen] = useState(false);

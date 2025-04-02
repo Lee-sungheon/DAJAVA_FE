@@ -1,9 +1,6 @@
 import { domToJpeg } from 'modern-screenshot';
 
-const throttle = <Params extends unknown[]>(
-  callback: (...args: Params) => unknown,
-  delayMs: number,
-) => {
+const throttle = <Params extends unknown[]>(callback: (...args: Params) => unknown, delayMs: number) => {
   let timeoutId: NodeJS.Timeout | null;
 
   return (...args: Params) => {
@@ -29,9 +26,7 @@ async function getCachedBase64(url: string) {
 }
 
 const getBase64FromUrl = async (url: string) => {
-  const response = await fetch(
-    `https://2z1dj6gdya.execute-api.ap-northeast-2.amazonaws.com/proxy?url=${url}`,
-  );
+  const response = await fetch(`https://2z1dj6gdya.execute-api.ap-northeast-2.amazonaws.com/proxy?url=${url}`);
   const blob = await response.blob();
   return new Promise<string>((resolve) => {
     const reader = new FileReader();
@@ -44,17 +39,44 @@ const getBase64FromUrl = async (url: string) => {
 };
 
 interface IMouseEventData {
-  type: 'mousemove' | 'touchmove' | 'click';
+  eventId: string;
+  sessionId: string;
+  pageUrl: string;
+  memberSerialNumber: string;
   timestamp: number;
+  browserWidth: number;
   clientX: number;
   clientY: number;
+  scrollY: number;
+  scrollHeight: number;
+  viewprotHeight: number;
+}
+
+interface IClickEventData {
+  eventId: string;
+  sessionId: string;
+  pageUrl: string;
+  memberSerialNumber: string;
+  timestamp: number;
+  browserWidth: number;
+  clientX: number;
+  clientY: number;
+  scrollY: number;
+  scrollHeight: number;
+  viewportHeight: number;
+  tag: string;
 }
 
 interface IScrollEventData {
-  type: 'scroll';
+  eventId: string;
+  sessionId: string;
+  pageUrl: string;
+  memberSerialNumber: string;
   timestamp: number;
-  scrollX: number;
+  browserWidth: number;
   scrollY: number;
+  scrollHeight: number;
+  viewprotHeight: number;
 }
 
 export class UserEventRecorder {
@@ -63,41 +85,73 @@ export class UserEventRecorder {
 
   private handleMouseMove = throttle((e: PointerEvent) => {
     const eventData: IMouseEventData = {
-      type: 'mousemove',
+      eventId: '1',
+      sessionId: '1',
+      pageUrl: window.location.href,
+      memberSerialNumber: '1',
       timestamp: Date.now(),
+      browserWidth: window.innerWidth,
       clientX: e.clientX,
       clientY: e.clientY,
+      scrollY: window.scrollY,
+      scrollHeight: document.documentElement.scrollHeight,
+      viewprotHeight: window.innerHeight,
     };
+    console.log('-mousemove-');
     console.log(eventData);
   }, this.throttleDelay);
 
   private handleTouchMove = throttle((e: TouchEvent) => {
     const eventData: IMouseEventData = {
-      type: 'touchmove',
+      eventId: '1',
+      sessionId: '1',
+      pageUrl: window.location.href,
+      memberSerialNumber: '1',
       timestamp: Date.now(),
+      browserWidth: window.innerWidth,
       clientX: e.touches[0].clientX,
       clientY: e.touches[0].clientY,
+      scrollY: window.scrollY,
+      scrollHeight: document.documentElement.scrollHeight,
+      viewprotHeight: window.innerHeight,
     };
+    console.log('-touchmove-');
     console.log(eventData);
   }, this.throttleDelay);
 
   private handleClick = (e: MouseEvent) => {
-    const eventData: IMouseEventData = {
-      type: 'click',
+    const target = e.target as HTMLElement;
+    const eventData: IClickEventData = {
+      eventId: '1',
+      sessionId: '1',
+      pageUrl: window.location.href,
+      memberSerialNumber: '1',
       timestamp: Date.now(),
+      browserWidth: window.innerWidth,
       clientX: e.clientX,
       clientY: e.clientY,
+      scrollY: window.scrollY,
+      scrollHeight: document.documentElement.scrollHeight,
+      viewportHeight: window.innerHeight,
+      tag: `${target.tagName.toLowerCase()}${target.id ? ` #${target.id}` : ''}${target.className ? ` .${target.className}` : ''}`,
     };
+    console.log('-click-');
     console.log(eventData);
   };
 
   private handleScroll = throttle(() => {
     const eventData: IScrollEventData = {
-      type: 'scroll',
+      eventId: '1',
+      sessionId: '1',
+      pageUrl: window.location.href,
+      memberSerialNumber: '1',
       timestamp: Date.now(),
-      scrollX: window.scrollX,
+      browserWidth: window.innerWidth,
       scrollY: window.scrollY,
+      scrollHeight: document.documentElement.scrollHeight,
+      viewprotHeight: window.innerHeight,
     };
+    console.log('-scroll-');
     console.log(eventData);
   }, this.throttleDelay);
 
@@ -109,12 +163,18 @@ export class UserEventRecorder {
       const images = Array.from(document.querySelectorAll('img'));
 
       const imgPromises = images.map(async (img) => {
-        if (!img.src.includes('https') || img.src.includes('localhost')) {
+        const imageUrl = img.getAttribute('data-src') || img.src;
+
+        if (!imageUrl || !imageUrl.includes('https') || imageUrl.includes('localhost')) {
           return;
         }
 
         try {
-          img.src = await getCachedBase64(img.src);
+          if (img.getAttribute('data-src')) {
+            img.setAttribute('data-src', await getCachedBase64(imageUrl));
+          } else {
+            img.src = await getCachedBase64(imageUrl);
+          }
         } catch (error) {
           console.log(error);
           return;

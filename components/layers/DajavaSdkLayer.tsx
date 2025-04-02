@@ -4,10 +4,12 @@ import Script from 'next/script';
 import { useEffect } from 'react';
 
 import { DAJAAVA_SDK_URL } from '@dajava/constants/siteUrl';
+import { UserEventRecorder } from '@dajava/sdk/eventRecorder';
 
 const DajavaSdkLayer = () => {
   useEffect(() => {
-    const userEventRecorder = new window.dajava.UserEventRecorder();
+    const userEventRecorder = new UserEventRecorder();
+    // const userEventRecorder = new window.dajava.UserEventRecorder();
     userEventRecorder.startRecording();
 
     return () => userEventRecorder.stopRecording();
