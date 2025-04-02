@@ -15,7 +15,7 @@ const throttle = <Params extends unknown[]>(callback: (...args: Params) => unkno
 
 const imageCache = new Map();
 
-async function getCachedBase64(url: string) {
+const getCachedBase64 = async (url: string) => {
   if (imageCache.has(url)) {
     return imageCache.get(url);
   } else {
@@ -23,7 +23,7 @@ async function getCachedBase64(url: string) {
     imageCache.set(url, promise);
     return promise;
   }
-}
+};
 
 const getBase64FromUrl = async (url: string) => {
   const response = await fetch(`https://2z1dj6gdya.execute-api.ap-northeast-2.amazonaws.com/proxy?url=${url}`);
@@ -36,6 +36,35 @@ const getBase64FromUrl = async (url: string) => {
       resolve(String(base64data));
     };
   });
+};
+
+const downloadBase64File = (base64Data: string, filename: string) => {
+  const [prefix, data] = base64Data.split(',');
+  const mimeMatch = prefix.match(/data:([^;]+);base64/);
+  if (!mimeMatch) {
+    console.error('잘못된 Base64 데이터 형식입니다.');
+    return;
+  }
+  const mime = mimeMatch[1];
+
+  const byteCharacters = atob(data);
+  const byteNumbers = new Array(byteCharacters.length);
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  const byteArray = new Uint8Array(byteNumbers);
+
+  const blob = new Blob([byteArray], { type: mime });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  URL.revokeObjectURL(url);
 };
 
 interface IMouseEventData {
@@ -227,7 +256,7 @@ export class UserEventRecorder {
           width: '100%',
           height: '100%',
         },
-      }).then((res) => console.log(res));
+      }).then((res) => downloadBase64File(res, 'screenshot.jpeg'));
     }, 2000);
 
     document.addEventListener('pointermove', this.handleMouseMove);
