@@ -9,18 +9,7 @@ import { flex } from '@dajava/styled-system/patterns';
 
 import Button from '../ui/Button';
 
-declare global {
-  interface Window {
-    dajava: {
-      UserEventRecorder: new () => {
-        startRecording: () => void;
-        stopRecording: () => void;
-      };
-    };
-  }
-}
-
-export default function TopNavigation() {
+const TopNavigation = () => {
   const pathname = usePathname();
 
   return (
@@ -84,4 +73,8 @@ export default function TopNavigation() {
       </HStack>
     </nav>
   );
-}
+};
+
+TopNavigation.displayName = 'TopNavigation';
+
+export default TopNavigation;

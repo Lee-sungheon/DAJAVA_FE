@@ -33,7 +33,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang={'ko'}>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <DajavaSdkLayer />
+        {/* <DajavaSdkLayer /> */}
         <JotaiProvider>
           <ReactQueryProvider>{children}</ReactQueryProvider>
         </JotaiProvider>
