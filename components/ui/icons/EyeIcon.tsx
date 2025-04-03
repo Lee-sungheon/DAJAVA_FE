@@ -1,6 +1,6 @@
 import { IconProps } from '.';
 
-export default function EyeIcon({ size = 24, color = 'currentColor', className }: IconProps) {
+const EyeIcon = ({ size = 24, color = 'currentColor', className }: IconProps) => {
   return (
     <svg
       width={size}
@@ -17,4 +17,8 @@ export default function EyeIcon({ size = 24, color = 'currentColor', className }
       <circle cx={'12'} cy={'12'} r={'3'} />
     </svg>
   );
-}
+};
+
+EyeIcon.displayName = 'EyeIcon';
+
+export default EyeIcon;

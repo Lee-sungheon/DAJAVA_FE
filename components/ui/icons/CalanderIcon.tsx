@@ -1,6 +1,6 @@
 import { IconProps } from '.';
 
-export default function CalanderIcon({ size = 18, color = 'gray', className }: IconProps) {
+const CalanderIcon = ({ size = 18, color = 'gray', className }: IconProps) => {
   return (
     <svg width={size} height={size} viewBox={'0 0 18 18'} fill={'none'} className={className}>
       <path
@@ -11,4 +11,8 @@ export default function CalanderIcon({ size = 18, color = 'gray', className }: I
       />
     </svg>
   );
-}
+};
+
+CalanderIcon.displayName = 'CalanderIcon';
+
+export default CalanderIcon;

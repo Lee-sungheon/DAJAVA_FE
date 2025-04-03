@@ -3,7 +3,7 @@ import './globals.css';
 import { Geist, Geist_Mono } from 'next/font/google';
 import React from 'react';
 
-import DajavaSdkLayer from '@dajava/components/layers/DajavaSdkLayer';
+// import DajavaSdkLayer from '@dajava/components/layers/DajavaSdkLayer';
 
 import JotaiProvider from '../components/providers/JotaiProvider';
 import ReactQueryProvider from '../components/providers/ReactQueryProvider';

@@ -13,7 +13,7 @@ const AuthForm = () => {
   } = useFormContext<IAdminAuthForm>();
 
   return (
-    <VStack css={{ width: '100%', py: '10vh', gap: '16px' }}>
+    <VStack css={{ width: '100%', py: '5vh', gap: '16px' }}>
       <Input
         type={'password'}
         placeholder={'Admin Code'}

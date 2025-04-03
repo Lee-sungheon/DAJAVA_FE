@@ -15,7 +15,7 @@ const ResultPage = async () => {
   }
 
   return (
-    <VStack css={{ minHeight: 'calc(100vh - 100px)', alignItems: 'center', p: '40px' }}>
+    <VStack css={{ minHeight: 'calc(100vh - 100px)', alignItems: 'center', p: '40px', backgroundColor: 'gray.50' }}>
       <SolutionResultTemplate />
     </VStack>
   );
