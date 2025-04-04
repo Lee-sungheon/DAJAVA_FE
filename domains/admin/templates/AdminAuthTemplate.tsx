@@ -8,7 +8,7 @@ import { VStack } from '@dajava/styled-system/jsx';
 import AuthController from '../components/auth/AuthController';
 import AuthForm from '../components/auth/AuthForm';
 import AuthHeader from '../components/auth/AuthHeader';
-import { IAdminAuthForm } from '../types';
+import { IAdminAuthForm } from '../types/auth';
 
 const AdminAuthTemplate = () => {
   const methods = useForm<IAdminAuthForm>({

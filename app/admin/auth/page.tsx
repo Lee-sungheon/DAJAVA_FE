@@ -3,10 +3,10 @@ import { redirect } from 'next/navigation';
 
 import { ROUTES } from '@dajava/constants/routes';
 import { COOKIE_KEY } from '@dajava/constants/storeKey';
-import AdminAuthTemplate from '@dajava/domains/admin/templates/SolutionResultAuthTemplate';
+import AdminAuthTemplate from '@dajava/domains/admin/templates/AdminAuthTemplate';
 import { VStack } from '@dajava/styled-system/jsx';
 
-const ResultPage = async () => {
+const AdminAuthPage = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get(COOKIE_KEY.ADMIN_AUTH_TOKEN);
 
@@ -21,6 +21,6 @@ const ResultPage = async () => {
   );
 };
 
-ResultPage.displayName = 'ResultPage';
+AdminAuthPage.displayName = 'AdminAuthPage';
 
-export default ResultPage;
+export default AdminAuthPage;

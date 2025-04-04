@@ -1,19 +1,25 @@
-import AdminTopNavgation from '@dajava/components/layouts/AdminTopNavgation';
+import AdminTopNavigation from '@dajava/components/layouts/AdminTopNavgation';
 import { flex } from '@dajava/styled-system/patterns';
 
-interface MainLayoutProps {
+interface AdminLayoutProps {
   children: React.ReactNode;
 }
 
-const ApplicationLayout = ({ children }: MainLayoutProps) => {
+const AdminLayout = ({ children }: AdminLayoutProps) => {
   return (
-    <main className={flex({ direction: 'column' })}>
-      <AdminTopNavgation />
+    <main
+      className={flex({
+        direction: 'column',
+        minH: '100vh',
+        bg: 'gray.50',
+      })}
+    >
+      <AdminTopNavigation />
       {children}
     </main>
   );
 };
 
-ApplicationLayout.displayName = 'ApplicationLayout';
+AdminLayout.displayName = 'AdminLayout';
 
-export default ApplicationLayout;
+export default AdminLayout;

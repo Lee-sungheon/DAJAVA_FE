@@ -4,7 +4,7 @@ import Input from '@dajava/components/ui/Input';
 import { css } from '@dajava/styled-system/css';
 import { VStack } from '@dajava/styled-system/jsx';
 
-import { IAdminAuthForm } from '../../types';
+import { IAdminAuthForm } from '../../types/auth';
 
 const AuthForm = () => {
   const {

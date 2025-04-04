@@ -15,20 +15,12 @@ const eslintConfig = [
   ...compat.config({
     rules: {
       'react/react-in-jsx-scope': 'off',
+      'react/no-unknown-property': ['error', { ignore: ['css'] }],
       semi: [2, 'always'],
       'import/order': [
         'warn',
         {
-          groups: [
-            'builtin',
-            'external',
-            'internal',
-            'parent',
-            'sibling',
-            'index',
-            'object',
-            'type',
-          ],
+          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
           'newlines-between': 'always',
           alphabetize: {
             order: 'asc',
@@ -40,10 +32,7 @@ const eslintConfig = [
       'comma-dangle': ['error', 'always-multiline'],
       'jsx-quotes': ['error', 'prefer-double'],
       quotes: ['error', 'single', { avoidEscape: true }],
-      'react/jsx-curly-brace-presence': [
-        'error',
-        { props: 'always', children: 'always' },
-      ],
+      'react/jsx-curly-brace-presence': ['error', { props: 'always', children: 'always' }],
       '@next/next/no-img-element': 'off',
     },
   }),

@@ -7,7 +7,7 @@ import { ROUTES } from '@dajava/constants/routes';
 import { COOKIE_KEY } from '@dajava/constants/storeKey';
 import { VStack } from '@dajava/styled-system/jsx';
 
-import { IAdminAuthForm } from '../../types';
+import { IAdminAuthForm } from '../../types/auth';
 
 export default function AuthController() {
   const router = useRouter();
