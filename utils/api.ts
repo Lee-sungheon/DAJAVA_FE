@@ -17,7 +17,11 @@ const get = async <T>(url: string, options?: IRequestOptions): Promise<T> => {
     throw new Error('Failed to fetch data');
   }
 
-  return response.json();
+  const contentType = response.headers.get('content-type');
+  if (contentType && contentType.includes('application/json')) {
+    return response.json();
+  }
+  return response.text() as unknown as T;
 };
 
 const post = async <T, D = unknown>(url: string, data: D, options?: IRequestOptions): Promise<T> => {
@@ -39,7 +43,11 @@ const post = async <T, D = unknown>(url: string, data: D, options?: IRequestOpti
     throw new Error('Failed to submit data');
   }
 
-  return response.json();
+  const contentType = response.headers.get('content-type');
+  if (contentType && contentType.includes('application/json')) {
+    return response.json();
+  }
+  return response.text() as unknown as T;
 };
 
 const patch = async <T, D = unknown>(url: string, data: D, options?: IRequestOptions): Promise<T> => {
@@ -61,7 +69,11 @@ const patch = async <T, D = unknown>(url: string, data: D, options?: IRequestOpt
     throw new Error('Failed to update data');
   }
 
-  return response.json();
+  const contentType = response.headers.get('content-type');
+  if (contentType && contentType.includes('application/json')) {
+    return response.json();
+  }
+  return response.text() as unknown as T;
 };
 
 const _delete = async <T>(url: string, options?: IRequestOptions): Promise<T> => {
@@ -77,7 +89,11 @@ const _delete = async <T>(url: string, options?: IRequestOptions): Promise<T> =>
     throw new Error('Failed to delete data');
   }
 
-  return response.json();
+  const contentType = response.headers.get('content-type');
+  if (contentType && contentType.includes('application/json')) {
+    return response.json();
+  }
+  return response.text() as unknown as T;
 };
 
 export { get, post, patch, _delete as delete };

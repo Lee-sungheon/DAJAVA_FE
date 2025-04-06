@@ -1,7 +1,7 @@
 import { domToJpeg } from 'modern-screenshot';
 import { v4 as uuidv4 } from 'uuid';
 
-import { DAJAAVA_API_URL } from '../constants/siteUrl';
+import { DAJAAVA_API_URL, DAJAVA_PROXY_URL } from '../constants/siteUrl';
 
 interface IRequestOptions {
   headers?: Record<string, string>;
@@ -26,7 +26,11 @@ const post = async <T, D = unknown>(url: string, data: D, options?: IRequestOpti
     throw new Error('Failed to submit data');
   }
 
-  return response.json();
+  const contentType = response.headers.get('content-type');
+  if (contentType && contentType.includes('application/json')) {
+    return response.json();
+  }
+  return response.text() as unknown as T;
 };
 
 const throttle = <Params extends unknown[]>(callback: (...args: Params) => unknown, delayMs: number) => {
@@ -55,7 +59,7 @@ const getCachedBase64 = async (url: string) => {
 };
 
 const getBase64FromUrl = async (url: string) => {
-  const response = await fetch(`https://2z1dj6gdya.execute-api.ap-northeast-2.amazonaws.com/proxy?url=${url}`);
+  const response = await fetch(`${DAJAVA_PROXY_URL}/proxy?url=${url}`);
   const blob = await response.blob();
   return new Promise<string>((resolve) => {
     const reader = new FileReader();
@@ -120,7 +124,7 @@ export class UserEventRecorder {
 
   constructor(
     { memberSerialNumber }: IUserEventRecorderConstructorParams = {
-      memberSerialNumber: 'a07cb1fc-e5db-4578-89a6-34d7a31f9389',
+      memberSerialNumber: '5_team_testSerial',
     },
   ) {
     this.sessionId = uuidv4();
@@ -278,15 +282,17 @@ export class UserEventRecorder {
           width: '100%',
           height: '100%',
         },
-      }).then((res) => {
-        const formData = new FormData();
-        const blob = new Blob([res], { type: 'image/jpeg' });
-        formData.append('imageFile', blob, `${this.memberSerialNumber}_${this.sessionId}_screenshot.jpeg`);
+      })
+        .then((res) => {
+          const formData = new FormData();
+          const blob = new Blob([res], { type: 'image/jpeg' });
+          formData.append('imageFile', blob, `${this.memberSerialNumber}_${this.sessionId}_screenshot.jpeg`);
 
-        post(`/v1/register/${this.memberSerialNumber}/page-capture`, formData).catch((error) => {
-          console.error('Failed to send screenshot:', error);
-        });
-      });
+          post(`/v1/register/${this.memberSerialNumber}/page-capture`, formData).catch((error) => {
+            console.error('Failed to send screenshot:', error);
+          });
+        })
+        .catch(() => null);
     }, 2000);
 
     document.addEventListener('pointermove', this.handleMouseMove);
