@@ -1,7 +1,33 @@
 import { domToJpeg } from 'modern-screenshot';
 import { v4 as uuidv4 } from 'uuid';
 
-import { post } from '@dajava/utils/api';
+import { DAJAAVA_API_URL } from '../constants/siteUrl';
+
+interface IRequestOptions {
+  headers?: Record<string, string>;
+}
+
+const post = async <T, D = unknown>(url: string, data: D, options?: IRequestOptions): Promise<T> => {
+  const headers =
+    data instanceof FormData
+      ? { ...options?.headers }
+      : {
+          'Content-Type': 'application/json',
+          ...options?.headers,
+        };
+
+  const response = await fetch(`${DAJAAVA_API_URL}${url}`, {
+    method: 'POST',
+    headers,
+    body: data instanceof FormData ? data : JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to submit data');
+  }
+
+  return response.json();
+};
 
 const throttle = <Params extends unknown[]>(callback: (...args: Params) => unknown, delayMs: number) => {
   let timeoutId: NodeJS.Timeout | null;
