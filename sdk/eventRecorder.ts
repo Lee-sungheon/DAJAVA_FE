@@ -1,4 +1,7 @@
 import { domToJpeg } from 'modern-screenshot';
+import { v4 as uuidv4 } from 'uuid';
+
+import { post } from '@dajava/utils/api';
 
 const throttle = <Params extends unknown[]>(callback: (...args: Params) => unknown, delayMs: number) => {
   let timeoutId: NodeJS.Timeout | null;
@@ -38,41 +41,12 @@ const getBase64FromUrl = async (url: string) => {
   });
 };
 
-const downloadBase64File = (base64Data: string, filename: string) => {
-  const [prefix, data] = base64Data.split(',');
-  const mimeMatch = prefix.match(/data:([^;]+);base64/);
-  if (!mimeMatch) {
-    console.error('잘못된 Base64 데이터 형식입니다.');
-    return;
-  }
-  const mime = mimeMatch[1];
-
-  const byteCharacters = atob(data);
-  const byteNumbers = new Array(byteCharacters.length);
-  for (let i = 0; i < byteCharacters.length; i++) {
-    byteNumbers[i] = byteCharacters.charCodeAt(i);
-  }
-  const byteArray = new Uint8Array(byteNumbers);
-
-  const blob = new Blob([byteArray], { type: mime });
-  const url = URL.createObjectURL(blob);
-
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-
-  URL.revokeObjectURL(url);
-};
-
 interface IMouseEventData {
   eventId: string;
   sessionId: string;
   pageUrl: string;
   memberSerialNumber: string;
-  timestamp: number;
+  timestamp: string;
   browserWidth: number;
   clientX: number;
   clientY: number;
@@ -86,7 +60,7 @@ interface IClickEventData {
   sessionId: string;
   pageUrl: string;
   memberSerialNumber: string;
-  timestamp: number;
+  timestamp: string;
   browserWidth: number;
   clientX: number;
   clientY: number;
@@ -101,24 +75,39 @@ interface IScrollEventData {
   sessionId: string;
   pageUrl: string;
   memberSerialNumber: string;
-  timestamp: number;
+  timestamp: string;
   browserWidth: number;
   scrollY: number;
   scrollHeight: number;
   viewprotHeight: number;
 }
 
+interface IUserEventRecorderConstructorParams {
+  memberSerialNumber: string;
+}
+
 export class UserEventRecorder {
   private isRecording: boolean = false;
   private throttleDelay: number = 200;
+  private sessionId: string;
+  private memberSerialNumber: string;
+
+  constructor(
+    { memberSerialNumber }: IUserEventRecorderConstructorParams = {
+      memberSerialNumber: 'a07cb1fc-e5db-4578-89a6-34d7a31f9389',
+    },
+  ) {
+    this.sessionId = uuidv4();
+    this.memberSerialNumber = memberSerialNumber;
+  }
 
   private handleMouseMove = throttle((e: PointerEvent) => {
     const eventData: IMouseEventData = {
-      eventId: '1',
-      sessionId: '1',
+      eventId: uuidv4(),
+      sessionId: this.sessionId,
       pageUrl: window.location.href,
-      memberSerialNumber: '1',
-      timestamp: Date.now(),
+      memberSerialNumber: this.memberSerialNumber,
+      timestamp: new Date().toISOString(),
       browserWidth: window.innerWidth,
       clientX: e.clientX,
       clientY: e.clientY,
@@ -126,17 +115,19 @@ export class UserEventRecorder {
       scrollHeight: document.documentElement.scrollHeight,
       viewprotHeight: window.innerHeight,
     };
-    console.log('-mousemove-');
-    console.log(eventData);
+
+    post('/v1/logs/movement', eventData).catch((error) => {
+      console.error('Failed to send movement data:', error);
+    });
   }, this.throttleDelay);
 
   private handleTouchMove = throttle((e: TouchEvent) => {
     const eventData: IMouseEventData = {
-      eventId: '1',
-      sessionId: '1',
+      eventId: uuidv4(),
+      sessionId: this.sessionId,
       pageUrl: window.location.href,
-      memberSerialNumber: '1',
-      timestamp: Date.now(),
+      memberSerialNumber: this.memberSerialNumber,
+      timestamp: new Date().toISOString(),
       browserWidth: window.innerWidth,
       clientX: e.touches[0].clientX,
       clientY: e.touches[0].clientY,
@@ -144,18 +135,20 @@ export class UserEventRecorder {
       scrollHeight: document.documentElement.scrollHeight,
       viewprotHeight: window.innerHeight,
     };
-    console.log('-touchmove-');
-    console.log(eventData);
+
+    post('/v1/logs/movement', eventData).catch((error) => {
+      console.error('Failed to send movement data:', error);
+    });
   }, this.throttleDelay);
 
   private handleClick = (e: MouseEvent) => {
     const target = e.target as HTMLElement;
     const eventData: IClickEventData = {
-      eventId: '1',
-      sessionId: '1',
+      eventId: uuidv4(),
+      sessionId: this.sessionId,
       pageUrl: window.location.href,
-      memberSerialNumber: '1',
-      timestamp: Date.now(),
+      memberSerialNumber: this.memberSerialNumber,
+      timestamp: new Date().toISOString(),
       browserWidth: window.innerWidth,
       clientX: e.clientX,
       clientY: e.clientY,
@@ -164,24 +157,27 @@ export class UserEventRecorder {
       viewportHeight: window.innerHeight,
       tag: `${target.tagName.toLowerCase()}${target.id ? ` #${target.id}` : ''}${target.className ? ` .${target.className}` : ''}`,
     };
-    console.log('-click-');
-    console.log(eventData);
-  };
 
+    post('/v1/logs/click', eventData).catch((error) => {
+      console.error('Failed to send click data:', error);
+    });
+  };
   private handleScroll = throttle(() => {
     const eventData: IScrollEventData = {
-      eventId: '1',
-      sessionId: '1',
+      eventId: uuidv4(),
+      sessionId: this.sessionId,
       pageUrl: window.location.href,
-      memberSerialNumber: '1',
-      timestamp: Date.now(),
+      memberSerialNumber: this.memberSerialNumber,
+      timestamp: new Date().toISOString(),
       browserWidth: window.innerWidth,
       scrollY: window.scrollY,
       scrollHeight: document.documentElement.scrollHeight,
       viewprotHeight: window.innerHeight,
     };
-    console.log('-scroll-');
-    console.log(eventData);
+
+    post('/v1/logs/scroll', eventData).catch((error) => {
+      console.error('Failed to send scroll data:', error);
+    });
   }, this.throttleDelay);
 
   public startRecording() {
@@ -256,7 +252,15 @@ export class UserEventRecorder {
           width: '100%',
           height: '100%',
         },
-      }).then((res) => downloadBase64File(res, 'screenshot.jpeg'));
+      }).then((res) => {
+        const formData = new FormData();
+        const blob = new Blob([res], { type: 'image/jpeg' });
+        formData.append('imageFile', blob, `${this.memberSerialNumber}_${this.sessionId}_screenshot.jpeg`);
+
+        post(`/v1/register/${this.memberSerialNumber}/page-capture`, formData).catch((error) => {
+          console.error('Failed to send screenshot:', error);
+        });
+      });
     }, 2000);
 
     document.addEventListener('pointermove', this.handleMouseMove);
@@ -267,6 +271,10 @@ export class UserEventRecorder {
 
   public stopRecording() {
     if (!this.isRecording) return;
+
+    post(`/v1/logs/end/${this.sessionId}`, { sessionId: this.sessionId }).catch((error) => {
+      console.error('Failed to send stop data:', error);
+    });
 
     this.isRecording = false;
     document.removeEventListener('pointermove', this.handleMouseMove);

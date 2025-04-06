@@ -3,8 +3,6 @@ import './globals.css';
 import { Geist, Geist_Mono } from 'next/font/google';
 import React from 'react';
 
-// import DajavaSdkLayer from '@dajava/components/layers/DajavaSdkLayer';
-
 import JotaiProvider from '../components/providers/JotaiProvider';
 import ReactQueryProvider from '../components/providers/ReactQueryProvider';
 
@@ -33,7 +31,6 @@ const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang={'ko'}>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {/* <DajavaSdkLayer /> */}
         <JotaiProvider>
           <ReactQueryProvider>{children}</ReactQueryProvider>
         </JotaiProvider>

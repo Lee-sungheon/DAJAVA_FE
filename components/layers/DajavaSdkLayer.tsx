@@ -9,7 +9,6 @@ import { UserEventRecorder } from '@dajava/sdk/eventRecorder';
 const DajavaSdkLayer = () => {
   useEffect(() => {
     const userEventRecorder = new UserEventRecorder();
-    // const userEventRecorder = new window.dajava.UserEventRecorder();
     userEventRecorder.startRecording();
 
     return () => userEventRecorder.stopRecording();

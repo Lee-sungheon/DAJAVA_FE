@@ -2,6 +2,8 @@ import { defineConfig } from '@pandacss/dev';
 
 import { globalCss } from '@dajava/styles/globalStyles';
 
+import { KEYFRAMES } from './styles/keyframs';
+
 export default defineConfig({
   preflight: true,
   clean: true,
@@ -13,7 +15,9 @@ export default defineConfig({
   ],
   exclude: [],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: KEYFRAMES,
+    },
   },
   globalCss: globalCss,
   jsxFramework: 'react',
