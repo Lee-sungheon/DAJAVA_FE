@@ -15,6 +15,8 @@ import { Box } from '@dajava/styled-system/jsx';
 
 import { IApplicationForm } from '../../types/application';
 
+const DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+
 const PeriodInput = () => {
   const [isOpen, setIsOpen] = useState(false);
   const calendarRef = useRef<HTMLDivElement>(null);
@@ -47,24 +49,27 @@ const PeriodInput = () => {
     }
 
     if (!startDate) {
-      setValue('startDate', format(range.from, 'yyyy-MM-dd'));
+      setValue('startDate', format(range.from, DATE_FORMAT));
       return;
     }
 
     if (range.to) {
-      setValue('startDate', format(range.from, 'yyyy-MM-dd'));
-      setValue('endDate', format(range.to, 'yyyy-MM-dd'));
+      setValue('startDate', format(range.from, DATE_FORMAT));
+      setValue('endDate', format(range.to, DATE_FORMAT));
     }
   };
 
   const selectedRange: DateRange | undefined = startDate
     ? {
-        from: parse(startDate, 'yyyy-MM-dd', new Date()),
-        to: endDate ? parse(endDate, 'yyyy-MM-dd', new Date()) : undefined,
+        from: parse(startDate, DATE_FORMAT, new Date()),
+        to: endDate ? parse(endDate, DATE_FORMAT, new Date()) : undefined,
       }
     : undefined;
 
-  const displayValue = startDate || endDate ? `${startDate} ~ ${endDate}` : '';
+  const displayValue =
+    startDate || endDate
+      ? `${format(parse(startDate, DATE_FORMAT, new Date()), 'yyyy-MM-dd')} ~ ${endDate ? format(parse(endDate, DATE_FORMAT, new Date()), 'yyyy-MM-dd') : ''}`
+      : '';
 
   return (
     <div className={calendarClassName} ref={calendarRef}>

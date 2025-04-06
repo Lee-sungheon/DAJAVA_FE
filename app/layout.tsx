@@ -1,7 +1,9 @@
 import './globals.css';
 
 import { Geist, Geist_Mono } from 'next/font/google';
-import React from 'react';
+import { ReactNode } from 'react';
+
+import Alert, { AlertProvider } from '@dajava/components/ui/Alert';
 
 import JotaiProvider from '../components/providers/JotaiProvider';
 import ReactQueryProvider from '../components/providers/ReactQueryProvider';
@@ -24,7 +26,7 @@ export const metadata: Metadata = {
 };
 
 interface RootLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const RootLayout = ({ children }: RootLayoutProps) => {
@@ -32,7 +34,10 @@ const RootLayout = ({ children }: RootLayoutProps) => {
     <html lang={'ko'}>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <JotaiProvider>
-          <ReactQueryProvider>{children}</ReactQueryProvider>
+          <ReactQueryProvider>
+            {children}
+            <Alert />
+          </ReactQueryProvider>
         </JotaiProvider>
       </body>
     </html>

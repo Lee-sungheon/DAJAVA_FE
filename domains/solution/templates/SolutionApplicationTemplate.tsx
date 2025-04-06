@@ -6,17 +6,12 @@ import { vstack } from '@dajava/styled-system/patterns';
 
 import ApplicationController from '../components/application/ApplicationController';
 import ApplicationForm from '../components/application/ApplicationForm';
+import { APPLICATION_FORM_INITIAL_VALUES } from '../constants/application';
 import { IApplicationForm } from '../types/application';
 
 const SolutionApplicationTemplate = () => {
   const methods = useForm<IApplicationForm>({
-    defaultValues: {
-      email: '',
-      password: '',
-      url: '',
-      startDate: '',
-      endDate: '',
-    },
+    defaultValues: APPLICATION_FORM_INITIAL_VALUES,
   });
 
   return (

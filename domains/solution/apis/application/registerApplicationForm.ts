@@ -4,8 +4,12 @@ import { post } from '@dajava/utils/api';
 
 import { IApplicationForm } from '../../types/application';
 
+interface ISubmitApplicationResponse {
+  serialNumber: string;
+}
+
 export const submitApplication = async (data: IApplicationForm) => {
-  return await post<string>('/v1/register', data);
+  return await post<ISubmitApplicationResponse>('/v1/register', data);
 };
 
 export const useSubmitApplication = () => {

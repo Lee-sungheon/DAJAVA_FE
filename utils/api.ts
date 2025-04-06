@@ -14,7 +14,8 @@ const get = async <T>(url: string, options?: IRequestOptions): Promise<T> => {
   });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch data');
+    const errorData = await response.json();
+    throw errorData;
   }
 
   const contentType = response.headers.get('content-type');
@@ -40,7 +41,8 @@ const post = async <T, D = unknown>(url: string, data: D, options?: IRequestOpti
   });
 
   if (!response.ok) {
-    throw new Error('Failed to submit data');
+    const errorData = await response.json();
+    throw errorData;
   }
 
   const contentType = response.headers.get('content-type');
@@ -66,7 +68,8 @@ const patch = async <T, D = unknown>(url: string, data: D, options?: IRequestOpt
   });
 
   if (!response.ok) {
-    throw new Error('Failed to update data');
+    const errorData = await response.json();
+    throw errorData;
   }
 
   const contentType = response.headers.get('content-type');
@@ -86,7 +89,8 @@ const _delete = async <T>(url: string, options?: IRequestOptions): Promise<T> =>
   });
 
   if (!response.ok) {
-    throw new Error('Failed to delete data');
+    const errorData = await response.json();
+    throw errorData;
   }
 
   const contentType = response.headers.get('content-type');

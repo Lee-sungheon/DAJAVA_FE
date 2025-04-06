@@ -24,14 +24,6 @@ const URLInput = () => {
           value: URL_REGEX,
           message: '올바른 URL 형식이 아닙니다.',
         },
-        validate: (value) => {
-          try {
-            new URL(value);
-            return true;
-          } catch {
-            return 'URL이 유효하지 않습니다.';
-          }
-        },
       })}
     />
   );
