@@ -3,7 +3,7 @@ import './globals.css';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ReactNode } from 'react';
 
-import Alert, { AlertProvider } from '@dajava/components/ui/Alert';
+import Alert from '@dajava/components/ui/Alert';
 
 import JotaiProvider from '../components/providers/JotaiProvider';
 import ReactQueryProvider from '../components/providers/ReactQueryProvider';
