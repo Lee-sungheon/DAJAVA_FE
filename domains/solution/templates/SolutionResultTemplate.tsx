@@ -2,6 +2,7 @@ import { css } from '@dajava/styled-system/css';
 import { HStack, VStack } from '@dajava/styled-system/jsx';
 
 import ResultAISolution from '../components/result/ResultAISolution';
+import ResultController from '../components/result/ResultController';
 import ResultHeatMap from '../components/result/ResultHeatMap';
 import ResultInfo from '../components/result/ResultInfo';
 import ResultSideBar from '../components/result/ResultSideBar';
@@ -31,6 +32,8 @@ const SolutionResultTemplate = () => {
           <ResultAISolution />
         </VStack>
       </VStack>
+
+      <ResultController />
     </HStack>
   );
 };

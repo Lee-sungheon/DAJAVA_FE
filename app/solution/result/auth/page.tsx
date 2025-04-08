@@ -9,8 +9,9 @@ import { VStack } from '@dajava/styled-system/jsx';
 const ResultPage = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get(COOKIE_KEY.SOLUTION_AUTH_TOKEN);
+  const uuid = cookieStore.get(COOKIE_KEY.SOLUTION_UUID);
 
-  if (!!token) {
+  if (!!token && !!uuid) {
     redirect(ROUTES.SOLUTION_RESULT);
   }
 

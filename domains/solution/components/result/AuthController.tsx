@@ -6,6 +6,7 @@ import Button from '@dajava/components/ui/Button';
 import { ROUTES } from '@dajava/constants/routes';
 import { COOKIE_KEY } from '@dajava/constants/storeKey';
 import { VStack } from '@dajava/styled-system/jsx';
+import { encrypt } from '@dajava/utils/crypto';
 
 import { IResultAuthForm } from '../../types/application';
 
@@ -14,8 +15,18 @@ export default function AuthController() {
   const { handleSubmit } = useFormContext<IResultAuthForm>();
 
   const onSubmitSolutionApplication: SubmitHandler<IResultAuthForm> = (data) => {
-    console.log(data);
-    Cookies.set(COOKIE_KEY.SOLUTION_AUTH_TOKEN, 'dummy-auth-token');
+    const encryptedPassword = encrypt(data.password);
+
+    Cookies.set(COOKIE_KEY.SOLUTION_UUID, data.uuid, {
+      secure: true,
+      sameSite: 'strict',
+    });
+
+    Cookies.set(COOKIE_KEY.SOLUTION_AUTH_TOKEN, encryptedPassword, {
+      secure: true,
+      sameSite: 'strict',
+    });
+
     router.replace(ROUTES.SOLUTION_RESULT);
   };
 
