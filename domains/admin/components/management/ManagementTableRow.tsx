@@ -2,12 +2,13 @@
 
 import { css } from '@dajava/styled-system/css';
 
+import { IRegisterInfo } from '../../apis/admin/getAdminRegisters';
+import { getFormattedDate } from '../../utils/management';
+
 import StatusBadge from './StatusBadge';
 
-import type { ISolutionData } from '../../types/management';
-
 interface ManagementTableRowProps {
-  item: ISolutionData;
+  item: IRegisterInfo;
 }
 
 const ManagementTableRow = ({ item }: ManagementTableRowProps) => {
@@ -20,15 +21,15 @@ const ManagementTableRow = ({ item }: ManagementTableRowProps) => {
       })}
     >
       <td className={css({ p: '4', color: 'gray.700' })}>{item.email}</td>
-      <td className={css({ p: '4', color: 'gray.700' })}>{item.applicationDate}</td>
-      <td className={css({ p: '4', color: 'gray.700' })}>{item.startDate}</td>
-      <td className={css({ p: '4', color: 'gray.700' })}>{item.endDate}</td>
-      <td className={css({ p: '4', color: 'gray.700' })}>{item.domain}</td>
+      <td className={css({ p: '4', color: 'gray.700' })}>{getFormattedDate(item.solutionDate)}</td>
+      <td className={css({ p: '4', color: 'gray.700' })}>{getFormattedDate(item.solutionStartDate)}</td>
+      <td className={css({ p: '4', color: 'gray.700' })}>{getFormattedDate(item.solutionEndDate)}</td>
+      <td className={css({ p: '4', color: 'gray.700' })}>{item.url}</td>
       <td className={css({ p: '4' })}>
-        <StatusBadge status={item.solutionStatus} />
+        <StatusBadge status={item.completed ? 'COMPLETED' : 'IN_PROGRESS'} />
       </td>
       <td className={css({ p: '4' })}>
-        <StatusBadge status={item.progressStatus} />
+        <StatusBadge status={item.eventState} />
       </td>
     </tr>
   );

@@ -1,3 +1,5 @@
+import { format } from 'date-fns/format';
+
 export const getPageRange = (start: number, end: number) => {
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 };
@@ -10,4 +12,8 @@ export const getVisiblePages = (currentPage: number, totalPages: number) => {
   const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
   return { startPage, endPage };
+};
+
+export const getFormattedDate = (date: string) => {
+  return format(new Date(date), 'yyyy-MM-dd HH:mm');
 };

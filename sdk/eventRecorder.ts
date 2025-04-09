@@ -53,6 +53,8 @@ export class UserEventRecorder {
   private throttleDelay: number = 200;
   private sessionId: string;
   private memberSerialNumber: string;
+  private lastUrl: string = '';
+  private observer: MutationObserver | null = null;
 
   constructor(
     { memberSerialNumber }: IUserEventRecorderConstructorParams = {
@@ -146,6 +148,29 @@ export class UserEventRecorder {
     if (this.isRecording) return;
     this.isRecording = true;
 
+    this.captureScreenshot();
+
+    this.observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+          const currentUrl = window.location.href;
+          if (currentUrl !== this.lastUrl) {
+            this.lastUrl = currentUrl;
+            this.captureScreenshot();
+          }
+        }
+      });
+    });
+
+    this.observer.observe(document.body, { childList: true, subtree: true });
+
+    document.addEventListener('pointermove', this.handleMouseMove);
+    document.addEventListener('touchmove', this.handleTouchMove);
+    document.addEventListener('click', this.handleClick);
+    window.addEventListener('scroll', this.handleScroll);
+  }
+
+  private captureScreenshot() {
     setTimeout(async () => {
       const images = Array.from(document.querySelectorAll('img'));
 
@@ -219,6 +244,8 @@ export class UserEventRecorder {
           const formData = new FormData();
           const blob = new Blob([res], { type: 'image/jpeg' });
           formData.append('imageFile', blob, `${this.memberSerialNumber}_${this.sessionId}_screenshot.jpeg`);
+          formData.append('serialNumber', this.memberSerialNumber);
+          formData.append('pageUrl', window.location.href);
 
           post(`/v1/register/${this.memberSerialNumber}/page-capture`, formData).catch((error) => {
             console.error('Failed to send screenshot:', error);
@@ -226,11 +253,6 @@ export class UserEventRecorder {
         })
         .catch(() => null);
     }, 2000);
-
-    document.addEventListener('pointermove', this.handleMouseMove);
-    document.addEventListener('touchmove', this.handleTouchMove);
-    document.addEventListener('click', this.handleClick);
-    window.addEventListener('scroll', this.handleScroll);
   }
 
   public stopRecording() {
@@ -245,5 +267,10 @@ export class UserEventRecorder {
     document.removeEventListener('touchmove', this.handleTouchMove);
     document.removeEventListener('click', this.handleClick);
     window.removeEventListener('scroll', this.handleScroll);
+
+    if (this.observer) {
+      this.observer.disconnect();
+      this.observer = null;
+    }
   }
 }

@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import { DAJAAVA_API_URL, DAJAVA_PROXY_URL } from '../constants/siteUrl';
 
 interface IRequestOptions {
@@ -5,29 +7,33 @@ interface IRequestOptions {
 }
 
 export const post = async <T, D = unknown>(url: string, data: D, options?: IRequestOptions): Promise<T> => {
-  const headers =
-    data instanceof FormData
-      ? { ...options?.headers }
-      : {
-          'Content-Type': 'application/json',
-          ...options?.headers,
-        };
+  try {
+    const headers =
+      data instanceof FormData
+        ? { ...options?.headers }
+        : {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            ...options?.headers,
+          };
 
-  const response = await fetch(`${DAJAAVA_API_URL}${url}`, {
-    method: 'POST',
-    headers,
-    body: data instanceof FormData ? data : JSON.stringify(data),
-  });
+    const response = await axios({
+      method: 'post',
+      url: `${DAJAAVA_API_URL}${url}`,
+      data: data instanceof FormData ? data : JSON.stringify(data),
+      headers,
+      withCredentials: true,
+    });
 
-  if (!response.ok) {
-    throw new Error('Failed to submit data');
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Axios error:', error.response?.data || error.message);
+    } else {
+      console.error('Error:', error);
+    }
+    throw error;
   }
-
-  const contentType = response.headers.get('content-type');
-  if (contentType && contentType.includes('application/json')) {
-    return response.json();
-  }
-  return response.text() as unknown as T;
 };
 
 export const throttle = <Params extends unknown[]>(callback: (...args: Params) => unknown, delayMs: number) => {

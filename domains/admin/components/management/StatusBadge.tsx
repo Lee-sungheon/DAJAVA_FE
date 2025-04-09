@@ -21,26 +21,26 @@ const Badge = styled('span', {
   },
   variants: {
     status: {
-      Pending: {
+      PENDING: {
         bg: 'red.100',
         color: 'red.700',
       },
-      Complete: {
+      COMPLETED: {
         bg: 'green.100',
         color: 'green.700',
       },
-      'In Progress': {
+      IN_PROGRESS: {
         bg: 'blue.100',
         color: 'blue.700',
       },
-      Rejected: {
+      REJECTED: {
         bg: 'gray.100',
         color: 'gray.700',
       },
     },
   },
   defaultVariants: {
-    status: 'Rejected',
+    status: 'REJECTED',
   },
 });
 
