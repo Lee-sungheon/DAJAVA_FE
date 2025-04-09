@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 
 import { DAJAAVA_API_URL } from '@dajava/constants/siteUrl';
 
