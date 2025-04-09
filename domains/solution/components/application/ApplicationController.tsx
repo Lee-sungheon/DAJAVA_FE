@@ -1,3 +1,4 @@
+import { isBefore, format, addDays } from 'date-fns';
 import Link from 'next/link';
 import { SubmitHandler, useFormContext } from 'react-hook-form';
 
@@ -10,12 +11,22 @@ import { useSubmitApplication } from '../../apis/application/registerApplication
 import { APPLICATION_FORM_INITIAL_VALUES } from '../../constants/application';
 import { IApplicationForm } from '../../types/application';
 
+const DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+
 export default function ApplicationController() {
   const { handleSubmit, reset } = useFormContext<IApplicationForm>();
 
   const { mutate, isPending } = useSubmitApplication();
 
   const onSubmitSolutionApplication: SubmitHandler<IApplicationForm> = (data) => {
+    const now = new Date();
+    const startDate = new Date(data.startDate);
+
+    if (isBefore(startDate, now)) {
+      const newStartDate = addDays(startDate, 1);
+      data.startDate = format(newStartDate, DATE_FORMAT);
+    }
+
     mutate(data, {
       onSuccess: () => reset(APPLICATION_FORM_INITIAL_VALUES),
     });

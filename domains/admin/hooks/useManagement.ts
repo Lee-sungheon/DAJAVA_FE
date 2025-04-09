@@ -14,8 +14,6 @@ export const useManagement = () => {
     pageSize: ITEMS_PER_PAGE,
   });
 
-  console.log(adminRegisters);
-
   const totalPages = 20;
   // const totalPages = Math.ceil(adminRegisters.length / ITEMS_PER_PAGE);
 
