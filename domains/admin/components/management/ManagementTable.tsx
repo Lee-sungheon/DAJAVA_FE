@@ -2,14 +2,13 @@
 
 import { css } from '@dajava/styled-system/css';
 
+import { IRegisterInfo } from '../../apis/admin/getAdminRegisters';
 import { MANAGEMENT_TABLE_HEADERS } from '../../constants/management';
 
 import ManagementTableRow from './ManagementTableRow';
 
-import type { ISolutionData } from '../../types/management';
-
 interface ManagementTableProps {
-  data: ISolutionData[];
+  data: IRegisterInfo[];
 }
 
 const ManagementTable = ({ data }: ManagementTableProps) => {
