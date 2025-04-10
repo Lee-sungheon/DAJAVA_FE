@@ -6,4 +6,5 @@ export const ROUTES = {
   SOLUTION_APPLICATION: '/solution/application',
   ADMIN: '/admin',
   ADMIN_AUTH: '/admin/auth',
+  POLICY: '/main/policy',
 } as const;

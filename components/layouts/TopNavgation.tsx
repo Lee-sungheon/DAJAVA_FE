@@ -35,8 +35,12 @@ const TopNavigation = () => {
               {'서비스 소개'}
             </Button>
           </Link>
-          <Link href={ROUTES.MAIN} replace>
-            <Button variant={'link'} size={'lg'} css={{ px: '1.5' }}>
+          <Link href={ROUTES.POLICY} replace>
+            <Button
+              variant={'link'}
+              size={'lg'}
+              css={{ px: '1.5', fontWeight: pathname === ROUTES.POLICY ? '700' : '400' }}
+            >
               {'서비스 정책'}
             </Button>
           </Link>
