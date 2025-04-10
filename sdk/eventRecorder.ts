@@ -148,8 +148,6 @@ export class UserEventRecorder {
     if (this.isRecording) return;
     this.isRecording = true;
 
-    this.captureScreenshot();
-
     this.observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
@@ -247,7 +245,7 @@ export class UserEventRecorder {
           formData.append('serialNumber', this.memberSerialNumber);
           formData.append('pageUrl', window.location.href);
 
-          post(`/v1/register/${this.memberSerialNumber}/page-capture`, formData).catch((error) => {
+          post('/v1/register/page-capture', formData).catch((error) => {
             console.error('Failed to send screenshot:', error);
           });
         })
