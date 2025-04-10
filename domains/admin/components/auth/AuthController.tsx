@@ -5,8 +5,8 @@ import Button from '@dajava/components/ui/Button';
 import { ROUTES } from '@dajava/constants/routes';
 import { VStack } from '@dajava/styled-system/jsx';
 
-import { useSubmitAdminAuth } from '../../apis/admin/registerAdminAuth';
 import { IAdminAuthForm } from '../../types/auth';
+import { useSubmitAdminAuth } from '../../apis/admin/registerAdminAuth';
 
 export default function AuthController() {
   const router = useRouter();

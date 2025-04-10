@@ -9,8 +9,10 @@ interface IAdminRegistersRequest {
   pageSize: number;
 }
 
-interface IAdminRegistersResponse {
+interface IAdminRegistersResponse extends IAdminRegistersRequest {
   registerInfos: IRegisterInfo[];
+  totalPages: number;
+  totalElements: number;
 }
 
 export interface IRegisterInfo {
@@ -47,7 +49,7 @@ export const useGetAdminRegisters = (requestData: IAdminRegistersRequest) => {
   });
 
   return {
-    data: data ? data.pages[0].registerInfos : [],
+    data: data ? data.pages : [],
     isLoading,
     hasNextPage,
   };

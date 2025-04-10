@@ -14,7 +14,7 @@ interface IMouseEventData {
   clientY: number;
   scrollY: number;
   scrollHeight: number;
-  viewprotHeight: number;
+  viewportHeight: number;
 }
 
 interface IClickEventData {
@@ -41,7 +41,7 @@ interface IScrollEventData {
   browserWidth: number;
   scrollY: number;
   scrollHeight: number;
-  viewprotHeight: number;
+  viewportHeight: number;
 }
 
 interface IUserEventRecorderConstructorParams {
@@ -77,7 +77,7 @@ export class UserEventRecorder {
       clientY: e.clientY,
       scrollY: window.scrollY,
       scrollHeight: document.documentElement.scrollHeight,
-      viewprotHeight: window.innerHeight,
+      viewportHeight: window.innerHeight,
     };
 
     post('/v1/logs/movement', eventData).catch((error) => {
@@ -97,7 +97,7 @@ export class UserEventRecorder {
       clientY: e.touches[0].clientY,
       scrollY: window.scrollY,
       scrollHeight: document.documentElement.scrollHeight,
-      viewprotHeight: window.innerHeight,
+      viewportHeight: window.innerHeight,
     };
 
     post('/v1/logs/movement', eventData).catch((error) => {
@@ -136,7 +136,7 @@ export class UserEventRecorder {
       browserWidth: window.innerWidth,
       scrollY: window.scrollY,
       scrollHeight: document.documentElement.scrollHeight,
-      viewprotHeight: window.innerHeight,
+      viewportHeight: window.innerHeight,
     };
 
     post('/v1/logs/scroll', eventData).catch((error) => {
@@ -241,7 +241,7 @@ export class UserEventRecorder {
         .then((res) => {
           const formData = new FormData();
           const blob = new Blob([res], { type: 'image/jpeg' });
-          formData.append('imageFile', blob, `${this.memberSerialNumber}_${this.sessionId}_screenshot.jpeg`);
+          formData.append('imageFile', blob, `${this.memberSerialNumber}_screenshot.jpeg`);
           formData.append('serialNumber', this.memberSerialNumber);
           formData.append('pageUrl', window.location.href);
 

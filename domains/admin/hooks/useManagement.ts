@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { useGetAdminRegisters } from '../apis/admin/getAdminRegisters';
 
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 10;
 
 export const useManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -14,15 +14,14 @@ export const useManagement = () => {
     pageSize: ITEMS_PER_PAGE,
   });
 
-  const totalPages = 20;
-  // const totalPages = Math.ceil(adminRegisters.length / ITEMS_PER_PAGE);
+  const totalPages = adminRegisters[0]?.totalPages;
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
   return {
-    data: adminRegisters,
+    data: adminRegisters.flatMap((page) => page.registerInfos),
     currentPage,
     totalPages,
     handlePageChange,

@@ -32,7 +32,12 @@ const AdminAuthTemplate = () => {
     >
       <AuthHeader />
       <FormProvider {...methods}>
-        <form className={css({ width: '100%', px: '30%' })}>
+        <form
+          className={css({ width: '100%', px: '30%' })}
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
           <AuthForm />
           <AuthController />
         </form>
