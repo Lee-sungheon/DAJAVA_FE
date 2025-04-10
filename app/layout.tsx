@@ -1,5 +1,6 @@
 import './globals.css';
 
+import { Provider } from 'jotai';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ReactNode } from 'react';
 
@@ -31,14 +32,20 @@ interface RootLayoutProps {
 
 const RootLayout = ({ children }: RootLayoutProps) => {
   return (
-    <html lang={'ko'}>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <JotaiProvider>
-          <ReactQueryProvider>
-            {children}
-            <Alert />
-          </ReactQueryProvider>
-        </JotaiProvider>
+    <html lang={'ko'} className={`${geistSans.variable} ${geistMono.variable}`}>
+      <head>
+        <link rel={'icon'} href={'/dajava-logo.png'} />
+        <link rel={'apple-touch-icon'} href={'/dajava-logo.png'} />
+      </head>
+      <body>
+        <Provider>
+          <JotaiProvider>
+            <ReactQueryProvider>
+              {children}
+              <Alert />
+            </ReactQueryProvider>
+          </JotaiProvider>
+        </Provider>
       </body>
     </html>
   );
