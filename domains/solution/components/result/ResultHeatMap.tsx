@@ -2,19 +2,52 @@
 
 import { useState } from 'react';
 
-import { css } from '@dajava/styled-system/css';
-import { HStack, VStack } from '@dajava/styled-system/jsx';
+import { VStack } from '@dajava/styled-system/jsx';
+
+import { ISolution } from '../../types/solution';
+
+import HeatMapControls from './HeatMapControls';
+import HeatMapVisualization from './HeatMapVisualization';
 
 type HeatMapType = 'click' | 'mouse' | 'scroll';
 
-const HEAT_MAP_OPTIONS = [
-  { value: 'click', label: '클릭' },
-  { value: 'mouse', label: '마우스 이동' },
-  { value: 'scroll', label: '스크롤' },
-] as const;
-
 const ResultHeatMap = () => {
   const [selectedType, setSelectedType] = useState<HeatMapType>('click');
+  const [hoveredCell, setHoveredCell] = useState<{
+    x: number;
+    y: number;
+    data: (typeof HEAT_MAP_MOCK_DATA.gridCells)[0];
+  } | null>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const closestCell = HEAT_MAP_MOCK_DATA.gridCells.reduce(
+      (closest, cell) => {
+        const cellX = (cell.gridX / HEAT_MAP_MOCK_DATA.gridSize) * HEAT_MAP_MOCK_DATA.pageWidth;
+        const cellY = (cell.gridY / HEAT_MAP_MOCK_DATA.gridSize) * HEAT_MAP_MOCK_DATA.pageHeight;
+        const distance = Math.sqrt(Math.pow(x - cellX, 2) + Math.pow(y - cellY, 2));
+
+        if (!closest || distance < closest.distance) {
+          return { cell, distance };
+        }
+        return closest;
+      },
+      null as { cell: (typeof HEAT_MAP_MOCK_DATA.gridCells)[0]; distance: number } | null,
+    );
+
+    if (closestCell && closestCell.distance < 50) {
+      setHoveredCell({
+        x: e.clientX,
+        y: e.clientY,
+        data: closestCell.cell,
+      });
+    } else {
+      setHoveredCell(null);
+    }
+  };
 
   return (
     <VStack
@@ -28,40 +61,74 @@ const ResultHeatMap = () => {
         gap: '24px',
       }}
     >
-      <HStack css={{ width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
-        <p className={css({ fontSize: 'xl', fontWeight: 600 })}>{'히트 맵'}</p>
-        <select
-          value={selectedType}
-          onChange={(e) => setSelectedType(e.target.value as HeatMapType)}
-          className={css({
-            p: '8px 16px',
-            borderRadius: 'md',
-            border: '1px solid',
-            borderColor: 'gray.200',
-            outline: 'none',
-            _focus: { borderColor: 'blue.500' },
-          })}
-        >
-          {HEAT_MAP_OPTIONS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </HStack>
-
-      <div
-        className={css({
-          width: '100%',
-          backgroundColor: 'gray.100',
-          borderRadius: 'lg',
-          overflow: 'hidden',
-        })}
-      >
-        <img src={'/heatmap-example.png'} alt={'히트맵'} className={css({ width: '100%', objectFit: 'contain' })} />
-      </div>
+      <HeatMapControls selectedType={selectedType} onTypeChange={setSelectedType} />
+      <HeatMapVisualization
+        data={HEAT_MAP_MOCK_DATA}
+        hoveredCell={hoveredCell}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={() => setHoveredCell(null)}
+      />
     </VStack>
   );
 };
+
+export const HEAT_MAP_MOCK_DATA: ISolution = {
+  gridSize: 1000,
+  pageWidth: 658,
+  pageHeight: 1406,
+  pageCapture: '/heatmap-example.png',
+  gridCells: [
+    ...Array.from({ length: 5 }, (_, i) => ({
+      gridX: Math.floor(100 + Math.sin(i / 5) * 50),
+      gridY: Math.floor(100 + i * 2),
+      count: Math.floor(10 + Math.random() * 10),
+      intensity: Math.floor(20 + Math.random() * 20),
+      width: 1 + Math.random() * 2,
+      height: 1 + Math.random() * 2,
+    })),
+    ...Array.from({ length: 10 }, (_, i) => ({
+      gridX: Math.floor(400 + Math.cos(i / 10) * 100),
+      gridY: Math.floor(500 + Math.sin(i / 10) * 100),
+      count: Math.floor(20 + Math.random() * 20),
+      intensity: Math.floor(40 + Math.random() * 30),
+      width: 2 + Math.random() * 3,
+      height: 2 + Math.random() * 3,
+    })),
+    ...Array.from({ length: 8 }, (_, i) => ({
+      gridX: Math.floor(600 + Math.sin(i / 8) * 30),
+      gridY: Math.floor(800 + i * 3),
+      count: Math.floor(15 + Math.random() * 15),
+      intensity: Math.floor(30 + Math.random() * 25),
+      width: 1.5 + Math.random() * 2,
+      height: 1.5 + Math.random() * 2,
+    })),
+    ...Array.from({ length: 15 }, (_, i) => ({
+      gridX: Math.floor(300 + Math.cos(i / 15) * 150),
+      gridY: Math.floor(700 + Math.sin(i / 15) * 150),
+      count: Math.floor(25 + Math.random() * 25),
+      intensity: Math.floor(50 + Math.random() * 40),
+      width: 1 + Math.random() * 4,
+      height: 1 + Math.random() * 4,
+    })),
+    ...Array.from({ length: 20 }, () => ({
+      gridX: Math.floor(Math.random() * 1000),
+      gridY: Math.floor(Math.random() * 1000),
+      count: Math.floor(5 + Math.random() * 15),
+      intensity: Math.floor(10 + Math.random() * 30),
+      width: 1 + Math.random() * 3,
+      height: 1 + Math.random() * 3,
+    })),
+  ],
+  metadata: {
+    maxCount: 100,
+    totalEvents: 2000,
+    pageUrl: 'https://example.com/page',
+    totalSessions: 50,
+    firstEventTime: '2025-04-11T16:53:24.594Z',
+    lastEventTime: '2025-04-11T16:53:24.594Z',
+  },
+};
+
+ResultHeatMap.displayName = 'ResultHeatMap';
 
 export default ResultHeatMap;

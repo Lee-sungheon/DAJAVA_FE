@@ -852,6 +852,11 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.7.tgz#4158d3105276773d5b7695cd4834b1722e4f37a8"
   integrity sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==
 
+"@types/geojson@*":
+  version "7946.0.16"
+  resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.16.tgz#8ebe53d69efada7044454e3305c19017d97ced2a"
+  integrity sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg==
+
 "@types/hast@^2.0.0":
   version "2.3.10"
   resolved "https://registry.yarnpkg.com/@types/hast/-/hast-2.3.10.tgz#5c9d9e0b304bbb8879b857225c5ebab2d81d7643"
@@ -865,6 +870,13 @@
   integrity sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==
   dependencies:
     "@types/unist" "*"
+
+"@types/heatmap.js@2.0.41":
+  version "2.0.41"
+  resolved "https://registry.yarnpkg.com/@types/heatmap.js/-/heatmap.js-2.0.41.tgz#0489f07b054e624afc09917435371fb63250f961"
+  integrity sha512-3oHffxC+N+1EKXjeC65klk1kHnLJ5i6tEKFNb/04J+qSfQuCliacsNBWDpt59JfG2vBXRRn+ICbzRZj48j6HfQ==
+  dependencies:
+    "@types/leaflet" "^0"
 
 "@types/js-cookie@^3.0.6":
   version "3.0.6"
@@ -880,6 +892,13 @@
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==
+
+"@types/leaflet@^0":
+  version "0.7.40"
+  resolved "https://registry.yarnpkg.com/@types/leaflet/-/leaflet-0.7.40.tgz#ed2436ef2772827c8d33c35640df74bb6f0a9b6d"
+  integrity sha512-R2UwXOKwnKZi9zNm37WbPTAVuqHmysE6NVihkc5DUrovTirUxFSbZzvXrlwv0n5sibe0w8VF1bWu0ta4kZlAaA==
+  dependencies:
+    "@types/geojson" "*"
 
 "@types/mdast@^4.0.0":
   version "4.0.4"
@@ -2824,6 +2843,11 @@ hastscript@^6.0.0:
     hast-util-parse-selector "^2.0.0"
     property-information "^5.0.0"
     space-separated-tokens "^1.0.0"
+
+heatmap.js@2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/heatmap.js/-/heatmap.js-2.0.5.tgz#466d3b86513f5d49112a49d25700ab2730149153"
+  integrity sha512-CG2gYFP5Cv9IQCXEg3ZRxnJDyAilhWnQlAuHYGuWVzv6mFtQelS1bR9iN80IyDmFECbFPbg6I0LR5uAFHgCthw==
 
 highlight.js@^10.4.1, highlight.js@~10.7.0:
   version "10.7.3"

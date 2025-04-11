@@ -21,7 +21,7 @@ const SolutionResultTemplate = () => {
     >
       <ResultSideBar />
 
-      <VStack css={{ flex: 1, rowGap: '32px', alignItems: 'flex-start', maxWidth: '1024px' }}>
+      <VStack css={{ flex: 1, rowGap: '32px', alignItems: 'flex-start' }}>
         <h2 className={css({ fontSize: '40px', fontWeight: 800, textShadow: '0px 4px 4px #00000040' })}>
           {'Solution Result'}
         </h2>
