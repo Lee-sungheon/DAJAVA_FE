@@ -1,6 +1,7 @@
 'use client';
 
 import { css } from '@dajava/styled-system/css';
+import { Box, styled } from '@dajava/styled-system/jsx';
 
 interface HeatMapOverlayProps {
   x: number;
@@ -13,26 +14,36 @@ interface HeatMapOverlayProps {
 
 const HeatMapOverlay = ({ x, y, data }: HeatMapOverlayProps) => {
   return (
-    <div
-      className={css({
-        position: 'fixed',
-        backgroundColor: 'white',
-        padding: '12px',
-        borderRadius: 'md',
-        boxShadow: 'md',
-        zIndex: 1000,
-        minWidth: '200px',
-      })}
-      style={{
-        left: x + 10,
-        top: y + 10,
-      }}
-    >
-      <p>{`강도: ${data.intensity}`}</p>
-      <p>{`횟수: ${data.count}`}</p>
-    </div>
+    <HeatMapOverlayBox style={{ left: `${x}%`, top: `${y}%` }}>
+      <div className={css({ display: 'flex', flexDirection: 'column', gap: '8px' })}>
+        <div className={css({ display: 'flex', justifyContent: 'space-between', alignItems: 'center' })}>
+          <span className={css({ color: 'gray.600', fontSize: 'sm' })}>{'강도'}</span>
+          <span className={css({ fontWeight: 'bold', color: 'blue.600' })}>{data.intensity}</span>
+        </div>
+        <div className={css({ display: 'flex', justifyContent: 'space-between', alignItems: 'center' })}>
+          <span className={css({ color: 'gray.600', fontSize: 'sm' })}>{'횟수'}</span>
+          <span className={css({ fontWeight: 'bold', color: 'blue.600' })}>{data.count}</span>
+        </div>
+      </div>
+    </HeatMapOverlayBox>
   );
 };
+
+const HeatMapOverlayBox = styled(Box, {
+  base: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    padding: '16px',
+    borderRadius: 'lg',
+    boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+    zIndex: 1000,
+    minWidth: '240px',
+    transform: 'translate(-50%, -100%)',
+    marginTop: '-12px',
+    border: '1px solid',
+    borderColor: 'gray.200',
+  },
+});
 
 HeatMapOverlay.displayName = 'HeatMapOverlay';
 

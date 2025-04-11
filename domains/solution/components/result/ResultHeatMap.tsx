@@ -13,41 +13,6 @@ type HeatMapType = 'click' | 'mouse' | 'scroll';
 
 const ResultHeatMap = () => {
   const [selectedType, setSelectedType] = useState<HeatMapType>('click');
-  const [hoveredCell, setHoveredCell] = useState<{
-    x: number;
-    y: number;
-    data: (typeof HEAT_MAP_MOCK_DATA.gridCells)[0];
-  } | null>(null);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    const closestCell = HEAT_MAP_MOCK_DATA.gridCells.reduce(
-      (closest, cell) => {
-        const cellX = (cell.gridX / HEAT_MAP_MOCK_DATA.gridSize) * HEAT_MAP_MOCK_DATA.pageWidth;
-        const cellY = (cell.gridY / HEAT_MAP_MOCK_DATA.gridSize) * HEAT_MAP_MOCK_DATA.pageHeight;
-        const distance = Math.sqrt(Math.pow(x - cellX, 2) + Math.pow(y - cellY, 2));
-
-        if (!closest || distance < closest.distance) {
-          return { cell, distance };
-        }
-        return closest;
-      },
-      null as { cell: (typeof HEAT_MAP_MOCK_DATA.gridCells)[0]; distance: number } | null,
-    );
-
-    if (closestCell && closestCell.distance < 50) {
-      setHoveredCell({
-        x: e.clientX,
-        y: e.clientY,
-        data: closestCell.cell,
-      });
-    } else {
-      setHoveredCell(null);
-    }
-  };
 
   return (
     <VStack
@@ -62,12 +27,7 @@ const ResultHeatMap = () => {
       }}
     >
       <HeatMapControls selectedType={selectedType} onTypeChange={setSelectedType} />
-      <HeatMapVisualization
-        data={HEAT_MAP_MOCK_DATA}
-        hoveredCell={hoveredCell}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={() => setHoveredCell(null)}
-      />
+      <HeatMapVisualization data={HEAT_MAP_MOCK_DATA} />
     </VStack>
   );
 };
@@ -128,7 +88,5 @@ export const HEAT_MAP_MOCK_DATA: ISolution = {
     lastEventTime: '2025-04-11T16:53:24.594Z',
   },
 };
-
-ResultHeatMap.displayName = 'ResultHeatMap';
 
 export default ResultHeatMap;

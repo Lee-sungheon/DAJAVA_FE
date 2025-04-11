@@ -3,14 +3,7 @@ export interface ISolution {
   pageWidth: number;
   pageHeight: number;
   pageCapture: string;
-  gridCells: Array<{
-    gridX: number;
-    gridY: number;
-    count: number;
-    intensity: number;
-    width: number;
-    height: number;
-  }>;
+  gridCells: IGredCell[];
   metadata: {
     maxCount: number;
     totalEvents: number;
@@ -19,4 +12,13 @@ export interface ISolution {
     firstEventTime: string;
     lastEventTime: string;
   };
+}
+
+export interface IGredCell {
+  gridX: number;
+  gridY: number;
+  count: number;
+  intensity: number;
+  width: number;
+  height: number;
 }
