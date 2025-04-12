@@ -7,12 +7,16 @@ import { HStack, VStack } from '@dajava/styled-system/jsx';
 
 import HeatMapSkeleton from '../components/result/HeatMapSkeleton';
 import ResultAISolutionLoading from '../components/result/ResultAISolutionLoading';
-import ResultInfo from '../components/result/ResultInfo';
+import ResultInfoSkeleton from '../components/result/ResultInfoSkeleton';
 import ResultSideBar from '../components/result/ResultSideBar';
 
 const ResultAISolution = dynamic(() => import('../components/result/ResultAISolution'), {
   ssr: false,
   loading: () => <ResultAISolutionLoading />,
+});
+const ResultInfo = dynamic(() => import('../components/result/ResultInfo'), {
+  ssr: false,
+  loading: () => <ResultInfoSkeleton />,
 });
 const ResultHeatMap = dynamic(() => import('../components/result/ResultHeatMap'), {
   ssr: false,

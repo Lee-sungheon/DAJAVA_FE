@@ -1,21 +1,41 @@
+import Cookies from 'js-cookie';
+import Link from 'next/link';
+
+import { COOKIE_KEY } from '@dajava/constants/storeKey';
 import { HStack, styled, VStack } from '@dajava/styled-system/jsx';
+import { decrypt } from '@dajava/utils/crypto';
+
+import { useGetSolutionHeatmap } from '../../apis/application/getSolutionHeatmap';
+
+import ResultInfoSkeleton from './ResultInfoSkeleton';
 
 const ResultInfo = () => {
+  const serialNumber = Cookies.get(COOKIE_KEY.SOLUTION_UUID);
+  const decryptedPassword = decrypt(Cookies.get(COOKIE_KEY.SOLUTION_AUTH_TOKEN) ?? '');
+
+  const { data, isLoading } = useGetSolutionHeatmap(serialNumber ?? '', decryptedPassword ?? '', 'click');
+
+  if (isLoading || !data) {
+    return <ResultInfoSkeleton />;
+  }
+
   return (
     <ResultInfoLayout>
       <VStack css={{ flex: 1, gap: '8px' }}>
         <DescriptionText>{'요청 URL'}</DescriptionText>
-        <InfoText>{'www.naver.com'}</InfoText>
+        <Link href={data?.metadata.pageUrl} target={'_blank'}>
+          <InfoText>{data?.metadata.pageUrl}</InfoText>
+        </Link>
       </VStack>
       <Divider />
       <VStack css={{ flex: 1, gap: '8px' }}>
         <DescriptionText>{'Total Sessions'}</DescriptionText>
-        <InfoText>{'1,094'}</InfoText>
+        <InfoText>{data?.metadata.totalSessions}</InfoText>
       </VStack>
       <Divider />
       <VStack css={{ flex: 1, gap: '8px' }}>
         <DescriptionText>{'Serial Number'}</DescriptionText>
-        <InfoText>{'8a2b-7b8c-rrsq-4i0z'}</InfoText>
+        <InfoText>{serialNumber}</InfoText>
       </VStack>
     </ResultInfoLayout>
   );
