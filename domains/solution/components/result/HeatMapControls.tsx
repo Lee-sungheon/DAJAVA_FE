@@ -3,17 +3,17 @@
 import { css } from '@dajava/styled-system/css';
 import { HStack } from '@dajava/styled-system/jsx';
 
-type HeatMapType = 'click' | 'mouse' | 'scroll';
+import { THeatmapType } from '../../types/solution';
 
 const HEAT_MAP_OPTIONS = [
   { value: 'click', label: '클릭' },
-  { value: 'mouse', label: '마우스 이동' },
+  { value: 'move', label: '마우스 이동' },
   { value: 'scroll', label: '스크롤' },
 ] as const;
 
 interface HeatMapControlsProps {
-  selectedType: HeatMapType;
-  onTypeChange: (type: HeatMapType) => void;
+  selectedType: THeatmapType;
+  onTypeChange: (type: THeatmapType) => void;
 }
 
 const HeatMapControls = ({ selectedType, onTypeChange }: HeatMapControlsProps) => {
@@ -22,7 +22,7 @@ const HeatMapControls = ({ selectedType, onTypeChange }: HeatMapControlsProps) =
       <p className={css({ fontSize: 'xl', fontWeight: 600 })}>{'히트 맵'}</p>
       <select
         value={selectedType}
-        onChange={(e) => onTypeChange(e.target.value as HeatMapType)}
+        onChange={(e) => onTypeChange(e.target.value as THeatmapType)}
         className={css({
           p: '8px 16px',
           borderRadius: 'md',

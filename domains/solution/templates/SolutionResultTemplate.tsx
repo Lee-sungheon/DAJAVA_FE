@@ -1,11 +1,23 @@
+'use client';
+
+import dynamic from 'next/dynamic';
+
 import { css } from '@dajava/styled-system/css';
 import { HStack, VStack } from '@dajava/styled-system/jsx';
 
-import ResultAISolution from '../components/result/ResultAISolution';
-import ResultController from '../components/result/ResultController';
-import ResultHeatMap from '../components/result/ResultHeatMap';
+import HeatMapSkeleton from '../components/result/HeatMapSkeleton';
+import ResultAISolutionLoading from '../components/result/ResultAISolutionLoading';
 import ResultInfo from '../components/result/ResultInfo';
 import ResultSideBar from '../components/result/ResultSideBar';
+
+const ResultAISolution = dynamic(() => import('../components/result/ResultAISolution'), {
+  ssr: false,
+  loading: () => <ResultAISolutionLoading />,
+});
+const ResultHeatMap = dynamic(() => import('../components/result/ResultHeatMap'), {
+  ssr: false,
+  loading: () => <HeatMapSkeleton />,
+});
 
 const SolutionResultTemplate = () => {
   return (
@@ -32,8 +44,6 @@ const SolutionResultTemplate = () => {
           <ResultAISolution />
         </VStack>
       </VStack>
-
-      <ResultController />
     </HStack>
   );
 };

@@ -22,3 +22,5 @@ export interface IGredCell {
   width: number;
   height: number;
 }
+
+export type THeatmapType = 'click' | 'move' | 'scroll';

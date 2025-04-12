@@ -1,92 +1,64 @@
 'use client';
 
-import { Heatmap, create } from 'heatmap.js';
-import { useEffect, useRef, useState } from 'react';
+import Cookies from 'js-cookie';
+import { useEffect, useRef } from 'react';
 
+import { COOKIE_KEY } from '@dajava/constants/storeKey';
 import { css } from '@dajava/styled-system/css';
+import { decrypt } from '@dajava/utils/crypto';
 
-import { ISolution } from '../../types/solution';
+import { useGetSolutionHeatmap } from '../../apis/application/getSolutionHeatmap';
+import { useGetSolutionPageCapture } from '../../apis/application/getSolutionPageCapture';
+import { useHeatmapData } from '../../hooks/useHeatmapData';
+import { useHeatmapHover } from '../../hooks/useHeatmapHover';
+import { useImageUrl } from '../../hooks/useImageUrl';
+import { THeatmapType } from '../../types/solution';
 
+import HeatMapError from './HeatMapError';
 import HeatMapOverlay from './HeatMapOverlay';
-import { HEAT_MAP_MOCK_DATA } from './ResultHeatMap';
+import HeatMapSkeleton from './HeatMapSkeleton';
 
 interface HeatMapVisualizationProps {
-  data: ISolution;
+  type: THeatmapType;
 }
 
-export const HeatMapVisualization = ({ data }: HeatMapVisualizationProps) => {
-  const heatmapRef = useRef<HTMLDivElement>(null);
-  const heatmapInstance = useRef<Heatmap<string, string, string>>(null);
-  const [hoveredCell, setHoveredCell] = useState<{
-    x: number;
-    y: number;
-    data: (typeof HEAT_MAP_MOCK_DATA.gridCells)[0];
-  } | null>(null);
+export const HeatMapVisualization = ({ type }: HeatMapVisualizationProps) => {
+  const token = Cookies.get(COOKIE_KEY.SOLUTION_AUTH_TOKEN);
+  const decryptedPassword = decrypt(token ?? '');
+  const serialNumber = Cookies.get(COOKIE_KEY.SOLUTION_UUID);
+  const {
+    data: heatmapData,
+    isLoading: isHeatmapLoading,
+    error: heatmapError,
+    refetch: refetchHeatmap,
+  } = useGetSolutionHeatmap(serialNumber ?? '', decryptedPassword ?? '', type);
+
+  const pageUrl = heatmapData?.pageCapture;
+  const {
+    data: pageCapture,
+    isLoading: isPageCaptureLoading,
+    error: pageCaptureError,
+  } = useGetSolutionPageCapture(pageUrl ?? '');
+
+  const imageUrl = useImageUrl(pageCapture);
+  const heatmapRef = useHeatmapData(heatmapData);
+  const { hoveredCell, handleMouseMove, handleMouseLeave } = useHeatmapHover(heatmapData);
+  const prevTypeRef = useRef<THeatmapType>(type);
 
   useEffect(() => {
-    if (heatmapRef.current) {
-      const container = heatmapRef.current;
-      const containerWidth = container.clientWidth;
-      const containerHeight = container.clientHeight;
-
-      heatmapInstance.current = create({
-        container: container,
-        radius: 20,
-        maxOpacity: 0.6,
-        minOpacity: 0,
-        blur: 0.75,
-      });
-
-      const points = data.gridCells.map((cell) => ({
-        x: (cell.gridX / data.gridSize) * containerWidth,
-        y: (cell.gridY / data.gridSize) * containerHeight,
-        value: cell.intensity,
-        radius: ((cell.width + cell.height) / 2) * 20,
-      }));
-
-      heatmapInstance.current.setData({
-        max: data.metadata.maxCount,
-        min: 0,
-        data: points,
-      });
+    if (type !== prevTypeRef.current) {
+      prevTypeRef.current = type;
+      refetchHeatmap();
     }
+  }, [type, refetchHeatmap]);
 
-    return () => {
-      if (heatmapInstance.current) {
-        heatmapInstance.current = null;
-      }
-    };
-  }, [data]);
+  if (isHeatmapLoading || isPageCaptureLoading) {
+    return <HeatMapSkeleton />;
+  }
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    const closestCell = data.gridCells.reduce(
-      (closest, cell) => {
-        const cellX = (cell.gridX / data.gridSize) * rect.width;
-        const cellY = (cell.gridY / data.gridSize) * rect.height;
-        const distance = Math.sqrt(Math.pow(x - cellX, 2) + Math.pow(y - cellY, 2));
-
-        if (!closest || distance < closest.distance) {
-          return { cell, distance };
-        }
-        return closest;
-      },
-      null as { cell: (typeof data.gridCells)[0]; distance: number } | null,
-    );
-
-    if (closestCell && closestCell.distance < 50) {
-      setHoveredCell({
-        x: (x / rect.width) * 100,
-        y: (y / rect.height) * 100,
-        data: closestCell.cell,
-      });
-    } else {
-      setHoveredCell(null);
-    }
-  };
+  if (heatmapError || pageCaptureError || !heatmapData) {
+    return <HeatMapError />;
+  }
 
   return (
     <div
@@ -97,23 +69,28 @@ export const HeatMapVisualization = ({ data }: HeatMapVisualizationProps) => {
         position: 'relative',
         width: '100%',
         height: '100%',
-        aspectRatio: '658/1406',
       })}
+      style={{
+        aspectRatio: `${heatmapData.pageWidth}/${heatmapData.pageHeight}`,
+      }}
       onMouseMove={handleMouseMove}
-      onMouseLeave={() => setHoveredCell(null)}
+      onMouseLeave={handleMouseLeave}
     >
-      <img
-        src={data.pageCapture}
-        alt={'히트맵'}
-        className={css({
-          width: '100%',
-          height: '100%',
-          objectFit: 'contain',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-        })}
-      />
+      {imageUrl && (
+        <img
+          src={imageUrl}
+          alt={'히트맵'}
+          className={css({
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+          })}
+        />
+      )}
+
       {hoveredCell && (
         <HeatMapOverlay
           x={hoveredCell.x}
