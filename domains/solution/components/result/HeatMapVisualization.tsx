@@ -1,5 +1,6 @@
 'use client';
 
+import { create } from 'heatmap.js';
 import Cookies from 'js-cookie';
 import { useEffect, useRef } from 'react';
 
@@ -11,7 +12,6 @@ import { useGetSolutionHeatmap } from '../../apis/application/getSolutionHeatmap
 import { useGetSolutionPageCapture } from '../../apis/application/getSolutionPageCapture';
 import { useHeatmapData } from '../../hooks/useHeatmapData';
 import { useHeatmapHover } from '../../hooks/useHeatmapHover';
-import { useImageUrl } from '../../hooks/useImageUrl';
 import { THeatmapType } from '../../types/solution';
 
 import HeatMapError from './HeatMapError';
@@ -40,8 +40,18 @@ export const HeatMapVisualization = ({ type }: HeatMapVisualizationProps) => {
     error: pageCaptureError,
   } = useGetSolutionPageCapture(pageUrl ?? '');
 
-  const imageUrl = useImageUrl(pageCapture);
-  const heatmapRef = useHeatmapData(heatmapData);
+  const createImageUrl = (blobData: Blob) => {
+    try {
+      return URL.createObjectURL(blobData);
+    } catch (error) {
+      console.error('이미지 URL 생성 중 오류 발생:', error);
+      return '';
+    }
+  };
+
+  const imageUrl = createImageUrl(pageCapture ?? new Blob());
+
+  const refCallback = useHeatmapData(heatmapData);
   const { hoveredCell, handleMouseMove, handleMouseLeave } = useHeatmapHover(heatmapData);
   const prevTypeRef = useRef<THeatmapType>(type);
 
@@ -62,7 +72,7 @@ export const HeatMapVisualization = ({ type }: HeatMapVisualizationProps) => {
 
   return (
     <div
-      ref={heatmapRef}
+      ref={refCallback}
       className={css({
         backgroundColor: 'gray.100',
         borderRadius: 'lg',
@@ -76,20 +86,18 @@ export const HeatMapVisualization = ({ type }: HeatMapVisualizationProps) => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      {imageUrl && (
-        <img
-          src={imageUrl}
-          alt={'히트맵'}
-          className={css({
-            width: '100%',
-            height: '100%',
-            objectFit: 'contain',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-          })}
-        />
-      )}
+      <img
+        src={imageUrl}
+        alt={'히트맵'}
+        className={css({
+          width: '100%',
+          height: '100%',
+          objectFit: 'contain',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+        })}
+      />
 
       {hoveredCell && (
         <HeatMapOverlay

@@ -7,7 +7,9 @@ const generateGetSolutionPageCaptureKey = (pageCapture: string) => {
 };
 
 const fetchSolutionPageCapture = async (pageCapture: string) => {
-  const response = await get<string>(`/v1/images/${pageCapture}`);
+  const response = await get<Blob>(`/v1/images/${pageCapture}`, {
+    responseType: 'blob',
+  });
   return response.data;
 };
 

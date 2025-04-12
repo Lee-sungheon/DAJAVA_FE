@@ -1,51 +1,57 @@
 import { Heatmap, create } from 'heatmap.js';
-import { useEffect, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
 import { ISolution } from '../types/solution';
 
 export const useHeatmapData = (data: ISolution | undefined) => {
-  const heatmapRef = useRef<HTMLDivElement>(null);
   const heatmapInstance = useRef<Heatmap<string, string, string>>(null);
 
-  useEffect(() => {
-    if (heatmapRef.current && data) {
-      const container = heatmapRef.current;
-      const containerWidth = container.clientWidth;
-      const containerHeight = container.clientHeight;
+  const refCallback = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (!node || !data) {
+        return;
+      }
+
+      const container = node;
 
       const existingCanvas = container.querySelector('.heatmap-canvas');
       if (existingCanvas) {
+        console.log('Removing existing canvas');
         container.removeChild(existingCanvas);
       }
 
-      heatmapInstance.current = create({
-        container: container,
-        radius: 20,
-        maxOpacity: 0.6,
-        minOpacity: 0,
-        blur: 0.75,
-      });
+      try {
+        heatmapInstance.current = create({
+          container: container,
+          radius: 20,
+          maxOpacity: 0.6,
+          minOpacity: 0,
+          blur: 0.75,
+        });
 
-      const points = data.gridCells.map((cell) => ({
-        x: (cell.gridX / (data.gridSizeX ?? data.gridSize)) * containerWidth,
-        y: (cell.gridY / (data.gridSizeY ?? data.gridSize)) * containerHeight,
-        value: cell.intensity,
-        radius: ((cell.width + cell.height) / 2) * 20,
-      }));
+        const containerWidth = container.clientWidth;
+        const containerHeight = container.clientHeight;
 
-      heatmapInstance.current.setData({
-        max: data.metadata.maxCount,
-        min: 0,
-        data: points,
-      });
-    }
+        const points = data.gridCells.map((cell) => {
+          const x = (cell.gridX / (data.gridSizeX ?? data.gridSize)) * containerWidth;
+          const y = (cell.gridY / (data.gridSizeY ?? data.gridSize)) * containerHeight;
+          const value = cell.intensity;
+          const radius = ((cell.width + cell.height) / 2) * 20;
 
-    return () => {
-      if (heatmapInstance.current) {
-        heatmapInstance.current = null;
+          return { x, y, value, radius };
+        });
+
+        heatmapInstance.current.setData({
+          max: data.metadata.maxCount,
+          min: 0,
+          data: points,
+        });
+      } catch (error) {
+        console.error('Error initializing heatmap:', error);
       }
-    };
-  }, [data]);
+    },
+    [data],
+  );
 
-  return heatmapRef;
+  return refCallback;
 };

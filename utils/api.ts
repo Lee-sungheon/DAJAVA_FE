@@ -4,6 +4,7 @@ import { DAJAAVA_API_URL } from '@dajava/constants/siteUrl';
 
 interface IRequestOptions {
   headers?: Record<string, string>;
+  responseType?: 'json' | 'blob' | 'arraybuffer' | 'document' | 'text' | 'stream';
 }
 
 interface IApiResponse<T> {
@@ -20,6 +21,7 @@ const get = async <T>(url: string, options?: IRequestOptions, domain = DAJAAVA_A
         'Content-Type': 'application/json',
         ...options?.headers,
       },
+      responseType: options?.responseType || 'json',
       withCredentials: true,
     });
 
