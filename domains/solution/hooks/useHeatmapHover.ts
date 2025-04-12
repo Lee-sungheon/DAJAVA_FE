@@ -18,8 +18,8 @@ export const useHeatmapHover = (data: ISolution | undefined) => {
 
     const closestCell = data.gridCells.reduce(
       (closest, cell) => {
-        const cellX = (cell.gridX / data.gridSize) * rect.width;
-        const cellY = (cell.gridY / data.gridSize) * rect.height;
+        const cellX = (cell.gridX / (data.gridSizeX ?? data.gridSize)) * rect.width;
+        const cellY = (cell.gridY / (data.gridSizeY ?? data.gridSize)) * rect.height;
         const distance = Math.sqrt(Math.pow(x - cellX, 2) + Math.pow(y - cellY, 2));
 
         if (!closest || distance < closest.distance) {

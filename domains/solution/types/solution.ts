@@ -1,5 +1,7 @@
 export interface ISolution {
   gridSize: number;
+  gridSizeX: number;
+  gridSizeY: number;
   pageWidth: number;
   pageHeight: number;
   pageCapture: string;

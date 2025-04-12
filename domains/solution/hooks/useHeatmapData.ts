@@ -27,8 +27,8 @@ export const useHeatmapData = (data: ISolution | undefined) => {
       });
 
       const points = data.gridCells.map((cell) => ({
-        x: (cell.gridX / data.gridSize) * containerWidth,
-        y: (cell.gridY / data.gridSize) * containerHeight,
+        x: (cell.gridX / (data.gridSizeX ?? data.gridSize)) * containerWidth,
+        y: (cell.gridY / (data.gridSizeY ?? data.gridSize)) * containerHeight,
         value: cell.intensity,
         radius: ((cell.width + cell.height) / 2) * 20,
       }));
