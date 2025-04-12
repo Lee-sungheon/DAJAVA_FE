@@ -1,6 +1,5 @@
 'use client';
 
-import { create } from 'heatmap.js';
 import Cookies from 'js-cookie';
 import { useEffect, useRef } from 'react';
 
