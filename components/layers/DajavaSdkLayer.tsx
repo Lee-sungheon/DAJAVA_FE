@@ -17,7 +17,8 @@ declare global {
 const DajavaSdkLayer = () => {
   useEffect(() => {
     const userEventRecorder = new window.dajava.UserEventRecorder({
-      memberSerialNumber: '0fc0981d-a91d-41d9-8c94-161b5d0e0e41',
+      memberSerialNumber: '5_team_testSerial',
+      // memberSerialNumber: '0fc0981d-a91d-41d9-8c94-161b5d0e0e41',
     });
     userEventRecorder.startRecording();
 
