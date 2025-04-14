@@ -25,8 +25,8 @@ export const metadata: Metadata = {
   title: 'DAJAVA',
   description: '사용자 행동 패턴 분석 솔루션',
   icons: {
-    icon: '/dajava-logo.png',
-    apple: '/dajava-logo.png',
+    icon: '/icon.ico',
+    apple: '/icon.ico',
   },
 };
 
