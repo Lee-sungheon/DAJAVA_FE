@@ -2,7 +2,6 @@
 
 import dynamic from 'next/dynamic';
 
-import { css } from '@dajava/styled-system/css';
 import { HStack, VStack } from '@dajava/styled-system/jsx';
 
 import HeatMapSkeleton from '../components/result/HeatMapSkeleton';
@@ -10,6 +9,9 @@ import ResultAISolutionLoading from '../components/result/ResultAISolutionLoadin
 import ResultInfoSkeleton from '../components/result/ResultInfoSkeleton';
 import ResultSideBar from '../components/result/ResultSideBar';
 
+const ResultHeader = dynamic(() => import('../components/result/ResultHeader'), {
+  ssr: false,
+});
 const ResultAISolution = dynamic(() => import('../components/result/ResultAISolution'), {
   ssr: false,
   loading: () => <ResultAISolutionLoading />,
@@ -38,9 +40,7 @@ const SolutionResultTemplate = () => {
       <ResultSideBar />
 
       <VStack css={{ flex: 1, rowGap: '32px', alignItems: 'flex-start' }}>
-        <h2 className={css({ fontSize: '40px', fontWeight: 800, textShadow: '0px 4px 4px #00000040' })}>
-          {'Solution Result'}
-        </h2>
+        <ResultHeader />
 
         <VStack css={{ width: '100%', gap: '40px' }}>
           <ResultInfo />

@@ -12,9 +12,8 @@ export const MAIN_FEATURE_CARDS = [
     imageUrl: 'https://sdk.dajava.link/tracking.png',
   },
   {
-    title: 'AI 기반 이상 행동 탐지',
-    description:
-      '반복 클릭(Rage Click), 작동하지 않는 클릭(Dead Click) 등 사용자의 불편함을 유발하는 지점을 AI가 자동으로 찾아냅니다.',
+    title: '이상 행동 탐지',
+    description: '반복 클릭, 의미 없는 클릭 등 사용자의 불편함을 유발하는 지점을 자체적으로 찾아 검증합니다.',
     imageUrl: 'https://sdk.dajava.link/ai.png',
   },
   {
