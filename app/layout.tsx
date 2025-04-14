@@ -37,10 +37,6 @@ interface RootLayoutProps {
 const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang={'ko'} className={`${geistSans.variable} ${geistMono.variable}`}>
-      <head>
-        <link rel={'icon'} href={'/dajava-logo.png'} />
-        <link rel={'apple-touch-icon'} href={'/dajava-logo.png'} />
-      </head>
       <body>
         <Provider>
           <JotaiProvider>
